@@ -26,6 +26,7 @@
     "build": "bunchee && cp src/styles.css dist/styles.css",
     "type-check": "tsc --noEmit",
     "dev:website": "turbo run dev --filter=website...",
+    "build:website": "turbo run build --filter=website...",
     "format": "prettier --write ."
   },
   "keywords": [
