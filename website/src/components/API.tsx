@@ -87,7 +87,7 @@ const props = [
 
 const API = () => {
   return (
-    <div>
+    <div className="overflow-x-auto">
       <h2>API</h2>
       <table>
         <thead>

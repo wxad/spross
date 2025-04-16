@@ -149,8 +149,7 @@ const Spross: React.FC<SprossProps> = ({
   const ref = useMergeRefs([context.refs.setReference, childrenRef]);
 
   let child = null;
-
-  if (React.isValidElement(children)) {
+  if (React.isValidElement(children) && children.type !== React.Fragment) {
     child = React.cloneElement(
       children,
       getReferenceProps({

@@ -1,7 +1,13 @@
 const Header: React.FC = () => {
   return (
     <div className="sticky top-0 mb-10 z-50 bg-white border-b border-solid border-neutral-200">
-      <div className="px-12 h-16 mx-auto flex items-center justify-between">
+      <div
+        className="h-16 mx-auto max-w-[750px] flex items-center justify-between"
+        style={{
+          paddingLeft: 'max(16px, env(safe-area-inset-left))',
+          paddingRight: 'max(16px, env(safe-area-inset-right))',
+        }}
+      >
         <div className="flex gap-2 items-center font-semibold">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
             <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
