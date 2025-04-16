@@ -27,13 +27,13 @@ export default function Home() {
             </p>
           </div>
           <Installation />
+          <Basics />
+          <hr className="border-t border-dashed border-neutral-300" />
           <Overflow />
           <hr className="border-t border-dashed border-neutral-300" />
           <Flip />
           <hr className="border-t border-dashed border-neutral-300" />
           <Height />
-          <hr className="border-t border-dashed border-neutral-300" />
-          <Basics />
           <hr className="border-t border-dashed border-neutral-300" />
           <Controlled />
           <hr className="border-t border-dashed border-neutral-300" />

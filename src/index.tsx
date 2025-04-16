@@ -52,6 +52,7 @@ export const defaultProps: SprossProps = {
   portal: true,
   size: undefined,
   trigger: 'hover',
+  type: 'popover',
   visible: undefined,
 };
 
@@ -90,6 +91,7 @@ const Spross: React.FC<SprossProps> = ({
   portal = defaultProps.portal,
   size: sizeProp = defaultProps.size,
   trigger = defaultProps.trigger,
+  type = defaultProps.type,
   visible = defaultProps.visible,
 }) => {
   const [isOpen, setIsOpen] = useState(visible);
@@ -174,6 +176,7 @@ const Spross: React.FC<SprossProps> = ({
           data-status={status}
           data-placement={placement}
           data-arrowed={arrowed}
+          data-type={type}
           ref={refs.setFloating}
           style={floatingStyles}
           {...getFloatingProps()}

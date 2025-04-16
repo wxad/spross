@@ -14,9 +14,6 @@ html {
 
 [data-spross-popup-content] {
   position: relative;
-  padding: 20px;
-  color: #1f1f1f;
-  background-color: #fff;
   border-radius: 6px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
   filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.05)) drop-shadow(0 6px 15px rgba(0, 0, 0, 0.05));
@@ -24,10 +21,6 @@ html {
 
 [data-spross-popup-arrow] {
   position: absolute;
-}
-
-[data-spross-popup-arrow-fill] {
-  fill: canvas;
 }
 
 [data-spross-popup-arrow-outer-stroke] {
@@ -126,4 +119,26 @@ html {
 
 [data-spross-reference] {
   display: inline-block;
+}
+
+/* type */
+
+[data-spross-popup][data-type='popover'] [data-spross-popup-content] {
+  padding: 20px;
+  color: #1f1f1f;
+  background-color: #fff;
+}
+
+[data-spross-popup][data-type='popover'] [data-spross-popup-arrow-fill] {
+  fill: #fff;
+}
+
+[data-spross-popup][data-type='tooltip'] [data-spross-popup-content] {
+  padding: 10px 12px;
+  color: #fff;
+  background-color: #404040;
+}
+
+[data-spross-popup][data-type='tooltip'] [data-spross-popup-arrow-fill] {
+  fill: #404040;
 }

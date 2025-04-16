@@ -8,7 +8,11 @@ const Overflow = () => {
       <h2>特性 1：内滚动跟随</h2>
       <p>
         不再需要
-        <a href="https://ant.design/components/popover#api" target="_blank" className="mx-1 relative text-blue-500 underline decoration-dotted decoration-current underline-offset-2">
+        <a
+          href="https://ant.design/components/popover#api"
+          target="_blank"
+          className="mx-1 relative text-blue-500 underline decoration-dotted decoration-current underline-offset-2"
+        >
           过去
         </a>
         的<code>getPopupContainer</code> 来指定浮层容器，组件内自动处理定位：

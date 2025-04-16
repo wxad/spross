@@ -32,6 +32,8 @@ export interface SprossProps {
   size?: (availableWidth: number, availableHeight: number) => void;
   // 触发方式 enum oneOf ["hover", "focus", "click"]
   trigger?: "hover" | "focus" | "click";
+  // popover or tooltip
+  type?: "popover" | "tooltip";
   // 外层控制是否显示
   visible?: boolean;
 }

@@ -78,6 +78,12 @@ const props = [
     description: '触发方式',
   },
   {
+    name: 'type',
+    type: '"popover" | "tooltip"',
+    default: 'popover',
+    description: '类型',
+  },
+  {
     name: 'visible',
     type: 'boolean',
     default: 'undefined',

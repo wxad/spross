@@ -6,6 +6,7 @@ import { Pane } from 'tweakpane';
 
 const Basics = () => {
   const [params, setParams] = useState({
+    type: 'popover' as 'popover' | 'tooltip',
     arrowed: true,
     trigger: 'hover' as 'hover' | 'click' | 'focus',
   });
@@ -18,6 +19,13 @@ const Basics = () => {
     const pane = new Pane({
       title: '参数调整',
       container: tweakpaneContainerRef.current as HTMLElement,
+    });
+
+    pane.addBinding(params, 'type', {
+      options: {
+        popover: 'popover',
+        tooltip: 'tooltip',
+      },
     });
 
     pane.addBinding(params, 'arrowed');
@@ -42,11 +50,11 @@ const Basics = () => {
 
   return (
     <div>
-      <h2>API：Popover & Tooltip 基础</h2>
+      <h2>Popover & Tooltip 基础</h2>
       <p>
         <code>arrowed</code>, <code>placement</code> & <code>trigger</code> 参数的使用：
       </p>
-      <CodeBox className="pt-[100px]">
+      <CodeBox className="pt-[120px]">
         <div ref={tweakpaneContainerRef} className="absolute top-2 right-2 w-[250px] grayscale opacity-90" />
         <div className="grid grid-cols-5 gap-2 w-fit mx-auto">
           {(
@@ -71,6 +79,7 @@ const Basics = () => {
               trigger={params.trigger}
               placement={placement}
               arrowed={params.arrowed}
+              type={params.type}
               onVisibleChange={(visible) => {
                 if (visible) {
                   setCurrentPosition(placement);
@@ -86,7 +95,7 @@ const Basics = () => {
 
 <Spross popup="这是一个弹出层" trigger="${params.trigger}" placement="${currentPosition}"${
         !params.arrowed ? ' arrowed={false}' : ''
-      }>
+      }${params.type === 'tooltip' ? ' type="tooltip"' : ''}>
   ${currentPosition}
 </Spross>`}</CodeBlock>
     </div>
