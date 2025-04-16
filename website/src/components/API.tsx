@@ -89,6 +89,12 @@ const props = [
     default: 'undefined',
     description: '外层控制是否显示',
   },
+  {
+    name: 'zIndex',
+    type: 'number | string',
+    default: 'undefined',
+    description: '设置 z-index',
+  },
 ];
 
 const API = () => {

@@ -36,4 +36,6 @@ export interface SprossProps {
   type?: "popover" | "tooltip";
   // 外层控制是否显示
   visible?: boolean;
+  // 设置 z-index
+  zIndex?: number | string;
 }

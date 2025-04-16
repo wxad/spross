@@ -4,16 +4,16 @@ html {
 
 [data-spross-popup] {
   z-index: var(--z-index-spross-popup);
+}
+
+[data-spross-popup-content] {
+  position: relative;
   width: max-content;
   max-width: 250px;
   min-height: 28px;
   font-size: 13px;
   overflow-wrap: break-word;
   white-space: pre-line;
-}
-
-[data-spross-popup-content] {
-  position: relative;
   border-radius: 6px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
   filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.05)) drop-shadow(0 6px 15px rgba(0, 0, 0, 0.05));

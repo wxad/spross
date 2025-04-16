@@ -56,6 +56,7 @@ export const defaultProps: SprossProps = {
   trigger: 'hover',
   type: 'popover',
   visible: undefined,
+  zIndex: undefined,
 };
 
 const getTransformOrigin = ({ placement, x, y }: { placement: Placement; x: number; y: number }) => {
@@ -95,6 +96,7 @@ const Spross: React.FC<SprossProps> = ({
   trigger = defaultProps.trigger,
   type = defaultProps.type,
   visible = defaultProps.visible,
+  zIndex = defaultProps.zIndex,
 }) => {
   const [isOpen, setIsOpen] = useState(visible);
   const arrowRef = useRef<SVGSVGElement>(null);
@@ -180,7 +182,10 @@ const Spross: React.FC<SprossProps> = ({
           data-arrowed={arrowed}
           data-type={type}
           ref={refs.setFloating}
-          style={floatingStyles}
+          style={{
+            zIndex,
+            ...(floatingStyles || {}),
+          }}
           {...getFloatingProps()}
         >
           <div
