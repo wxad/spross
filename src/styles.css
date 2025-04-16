@@ -122,7 +122,6 @@ html {
 }
 
 /* type */
-
 [data-spross-popup][data-type='popover'] [data-spross-popup-content] {
   padding: 20px;
   color: #1f1f1f;

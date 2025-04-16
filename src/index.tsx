@@ -23,6 +23,8 @@ import {
   size,
 } from '@floating-ui/react';
 
+const ARROW_OFFSET = 10;
+
 const placementMap = {
   top: 'top',
   topLeft: 'top-start',
@@ -61,17 +63,17 @@ const getTransformOrigin = ({ placement, x, y }: { placement: Placement; x: numb
   let yOrigin = '50%';
 
   if (placement.includes('top')) {
-    xOrigin = x === undefined ? '50%' : `${x}px`;
+    xOrigin = x === undefined ? '50%' : `${x + ARROW_OFFSET}px`;
     yOrigin = 'calc(100% + 8px)';
   } else if (placement.includes('bottom')) {
-    xOrigin = x === undefined ? '50%' : `${x}px`;
+    xOrigin = x === undefined ? '50%' : `${x + ARROW_OFFSET}px`;
     yOrigin = '-8px';
   } else if (placement.includes('left')) {
     xOrigin = 'calc(100% + 8px)';
-    yOrigin = y === undefined ? '50%' : `${y}px`;
+    yOrigin = y === undefined ? '50%' : `${y + ARROW_OFFSET}px`;
   } else if (placement.includes('right')) {
     xOrigin = '-8px';
-    yOrigin = y === undefined ? '50%' : `${y}px`;
+    yOrigin = y === undefined ? '50%' : `${y + ARROW_OFFSET}px`;
   }
 
   return `${xOrigin} ${yOrigin}`;
