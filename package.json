@@ -1,6 +1,6 @@
 {
   "name": "spross",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Spross(德：发芽): A floating layer component for React, suitable for Popover, Tooltip, Dropdown, Menu, Dialog, Drawer, etc.",
   "exports": {
     ".": {
