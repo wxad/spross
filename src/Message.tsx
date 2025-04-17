@@ -2,7 +2,7 @@
 
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
-import { SprossMessageProps } from './types';
+import { SprossMessageProps, SprossMessage } from './types';
 
 const INTENTS = ['normal', 'primary', 'success', 'warning', 'danger'] as const;
 
@@ -30,17 +30,6 @@ const defaultProps: SprossMessageProps = {
   onClose: undefined,
 };
 
-type func = (config: SprossMessageProps | string) => void;
-
-export interface IMessage
-  extends React.ForwardRefExoticComponent<SprossMessageProps & React.RefAttributes<HTMLDivElement>> {
-  normal: func;
-  primary: func;
-  success: func;
-  warning: func;
-  danger: func;
-}
-
 const Message = forwardRef<HTMLDivElement, SprossMessageProps>(
   (
     {
@@ -51,6 +40,7 @@ const Message = forwardRef<HTMLDivElement, SprossMessageProps>(
       duration = defaultProps.duration,
       getContainer = defaultProps.getContainer,
       intent = defaultProps.intent,
+      onClose = defaultProps.onClose,
       ...otherProps
     },
     ref: any,
@@ -83,7 +73,14 @@ const Message = forwardRef<HTMLDivElement, SprossMessageProps>(
 
     useEffect(() => {
       setCloseTimer();
-      return clearCloseTimer;
+      return () => {
+        clearCloseTimer();
+        if (window.sprossMessageState.messages) {
+          window.sprossMessageState.messages = window.sprossMessageState.messages.filter(
+            (message) => message.id !== domRef.current?.dataset.id,
+          );
+        }
+      };
     }, []);
 
     useImperativeHandle(ref, () => ({
@@ -106,7 +103,15 @@ const Message = forwardRef<HTMLDivElement, SprossMessageProps>(
           <path d={ICONS[intent]} fillRule="evenodd" />
         </svg>
         <div data-spross-message-content>{content}</div>
-        <svg data-spross-message-close-icon viewBox="0 0 18 18">
+        <svg
+          data-spross-message-close-icon
+          viewBox="0 0 18 18"
+          onClick={() => {
+            if (onClose) {
+              onClose();
+            }
+          }}
+        >
           <path
             d="M14.1265 4.93709C14.3218 4.74183 14.3218 4.42524 14.1265 4.22998L13.773 3.87643C13.5777 3.68117 13.2611 3.68116 13.0659 3.87643L9.00002 7.94229L4.93416 3.87643C4.7389 3.68117 4.42231 3.68117 4.22705 3.87643L3.8735 4.22998C3.67824 4.42524 3.67824 4.74183 3.8735 4.93709L7.93936 9.00295L3.8735 13.0688C3.67824 13.2641 3.67824 13.5807 3.8735 13.7759L4.22705 14.1295C4.42231 14.3247 4.7389 14.3247 4.93416 14.1295L9.00002 10.0636L13.0659 14.1295C13.2611 14.3247 13.5777 14.3247 13.773 14.1295L14.1265 13.7759C14.3218 13.5807 14.3218 13.2641 14.1265 13.0688L10.0607 9.00295L14.1265 4.93709Z"
             fillRule="evenodd"
@@ -115,37 +120,63 @@ const Message = forwardRef<HTMLDivElement, SprossMessageProps>(
       </div>
     );
   },
-) as IMessage;
+) as SprossMessage;
+
+// 更新样式的核心函数
+const updateStyles = () => {
+  setTimeout(() => {
+    const { messages } = window.sprossMessageState;
+    messages.forEach((id, index) => {
+      const message = document.querySelector(`[data-spross-message-container][data-id="${id.id}"]`) as HTMLDivElement;
+      const visible = index >= messages.length - 3;
+      message.style.opacity = visible ? '1' : '0';
+      message.style.visibility = visible ? 'visible' : 'hidden';
+      message.style.transform = `translate3d(0, ${70 * (messages.length - 1 - index)}px, 0)`;
+    });
+  }, 50);
+};
 
 const newInstance = (props: SprossMessageProps) => {
   const { onClose, getContainer, intent, ...otherProps } = props;
+  const id = Math.random().toString(36).substring(2, 15);
   const container = document.createElement('div');
   container.dataset.sprossMessageContainer = 'true';
   container.dataset.sprossMessageIntent = intent;
+  container.dataset.id = id;
   const dest = getContainer ? getContainer() : document.body;
 
+  const newObj = { id };
+
+  if (!window.sprossMessageState) {
+    window.sprossMessageState = {
+      collapsable: false,
+      sameCollapsable: false,
+      messages: [newObj],
+    };
+  } else {
+    window.sprossMessageState.messages.push(newObj);
+  }
   let instance: any;
 
-  const updateStyles = () => {
-    setTimeout(() => {
-      const messages = Array.from(document.querySelectorAll('[data-spross-message-container]')) as HTMLDivElement[];
-      messages.forEach((message, index) => {
-        message.style.opacity = '1';
-        message.style.transform = `translate3d(0, ${70 * (messages.length - 1 - index)}px, 0)`;
-      });
-    }, 50);
-  };
-
   updateStyles();
+
+  const root = createRoot(container);
 
   const close = () => {
     if (onClose) {
       onClose();
     }
-    setTimeout(() => {}, 300);
+    window.sprossMessageState.messages = window.sprossMessageState.messages.filter((message) => message.id !== id);
+    container.style.opacity = '0';
+    container.style.visibility = 'hidden';
+    updateStyles();
+    setTimeout(() => {
+      // 卸载组件
+      root.unmount();
+      // 删除容器
+      container.parentNode?.removeChild(container);
+    }, 300);
   };
-
-  const root = createRoot(container);
 
   root.render(
     <Message

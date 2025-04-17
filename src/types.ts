@@ -39,6 +39,29 @@ export interface SprossPopoverProps {
   zIndex?: number | string;
 }
 
+type SprossMessageFunc = (config: SprossMessageProps | string) => void;
+
+export interface SprossMessage
+  extends React.ForwardRefExoticComponent<SprossMessageProps & React.RefAttributes<HTMLDivElement>> {
+  normal: SprossMessageFunc;
+  primary: SprossMessageFunc;
+  success: SprossMessageFunc;
+  warning: SprossMessageFunc;
+  danger: SprossMessageFunc;
+}
+
+export interface SprossMessageState {
+  collapsable: false;
+  sameCollapsable: false;
+  messages: { id: string }[];
+}
+
+declare global {
+  interface Window {
+    sprossMessageState: SprossMessageState;
+  }
+}
+
 export interface SprossMessageProps {
   // className
   className?: string;
