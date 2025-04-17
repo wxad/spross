@@ -2,38 +2,59 @@ import React from 'react';
 import { OpenChangeReason } from '@floating-ui/react';
 
 export interface SprossPopoverProps {
-  // 是否显示箭头
+  // Whether to show the arrow
   arrowed?: boolean;
+  // The child element
   children?: React.ReactNode;
-  // mouseEnter 显示的延时，单位：s，只在 trigger="hover" 时有效
+  // The delay time for mouseEnter, unit: s, only effective when trigger="hover"
   mouseEnterDelay?: number;
-  // mouseLeave 隐藏的延时，单位：s，只在 trigger="hover" 时有效
+  // The delay time for mouseLeave, unit: s, only effective when trigger="hover"
   mouseLeaveDelay?: number;
-  // offset 偏移量
+  // The offset
   offset?: number
   | {
     mainAxis?: number;
     crossAxis?: number;
     alignmentAxis?: number | null;
   };
-  // 显示发生变化时的 handler
+  // The handler when the display changes
   onVisibleChange?: (visible: boolean, e?: Event, reason?: OpenChangeReason) => void;
-  // 弹出层位置 enum oneOf ["top", "left", "right", "bottom", "topLeft", "topRight", "bottomLeft", "bottomRight", "leftTop", "leftBottom", "rightTop", "rightBottom"]
+  // The position of the popup, enum oneOf ["top", "left", "right", "bottom", "topLeft", "topRight", "bottomLeft", "bottomRight", "leftTop", "leftBottom", "rightTop", "rightBottom"]
   placement?: "top" | "left" | "right" | "bottom" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | "leftTop" | "leftBottom" | "rightTop" | "rightBottom";
-  // 弹出层内容
+  // The popup content
   popup: React.ReactNode;
-  // 弹出层内容的 className
+  // The className of the popup content
   popupClassName?: string;
-  // 弹出层内容的 style
+  // The style of the popup content
   popupStyle?: React.CSSProperties;
-  // 是否使用 portal 渲染
+  // Whether to use portal to render
   portal?: boolean;
-  // 自适应大小，组件会吐出可用空间，需业务侧自行使用
+  // The size of the popup content, the component will spit out the available space, and the business side needs to use it by itself
   size?: (availableWidth: number, availableHeight: number) => void;
-  // 触发方式 enum oneOf ["hover", "focus", "click"]
+  // The trigger of the popup content
   trigger?: "hover" | "focus" | "click";
-  // 外层控制是否显示
+  // The outer control of the popup content
   visible?: boolean;
-  // 设置 z-index
+  // The z-index of the popup content
   zIndex?: number | string;
+}
+
+export interface SprossMessageProps {
+  // className
+  className?: string;
+  // style
+  style?: React.CSSProperties;
+  // Whether to show the close button, can combine with duration 0 to close only on click
+  closable?: boolean
+  // content
+  content: React.ReactNode;
+  // duration
+  duration?: number;
+  // getContainer, default to document.body
+  getContainer?: () => HTMLElement;
+  // intent
+  intent?: "normal" | "primary" | "success" | "warning" | "danger";
+  // onClose
+  onClose?: () => void;
+
 }
