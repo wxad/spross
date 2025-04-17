@@ -1,10 +1,9 @@
 import type { PageMapItem } from 'nextra';
-import { version } from 'nextra/package.json';
 import React from 'react';
 import Link from 'next/link';
 import Navbar from './Navbar';
 
-export const NextraTheme: React.FC<{
+const NextraTheme: React.FC<{
   children: React.ReactNode;
   pageMap: PageMapItem[];
 }> = ({ children, pageMap }) => {
@@ -67,3 +66,5 @@ export const NextraTheme: React.FC<{
     </>
   );
 };
+
+export default NextraTheme;

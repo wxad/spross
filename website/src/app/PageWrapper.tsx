@@ -1,6 +1,6 @@
 'use client';
 
-import { NextraTheme } from './_components/nextra-theme';
+import NextraTheme from './_components/NextraTheme';
 import type { PageMapItem } from 'nextra';
 import { usePathname } from 'next/navigation';
 
