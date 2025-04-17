@@ -1,7 +1,7 @@
 import React from 'react';
 import { OpenChangeReason } from '@floating-ui/react';
 
-export interface SprossProps {
+export interface SprossPopoverProps {
   // 是否显示箭头
   arrowed?: boolean;
   children?: React.ReactNode;
@@ -32,8 +32,6 @@ export interface SprossProps {
   size?: (availableWidth: number, availableHeight: number) => void;
   // 触发方式 enum oneOf ["hover", "focus", "click"]
   trigger?: "hover" | "focus" | "click";
-  // popover or tooltip
-  type?: "popover" | "tooltip";
   // 外层控制是否显示
   visible?: boolean;
   // 设置 z-index

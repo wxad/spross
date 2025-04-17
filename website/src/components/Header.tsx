@@ -1,6 +1,9 @@
-const Header: React.FC = () => {
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+
+const Header: React.FC = ({ className }: { className?: string }) => {
   return (
-    <div className="sticky top-0 mb-10 z-50 bg-white border-b border-solid border-neutral-200">
+    <div className={cn('sticky top-0 mb-[90px] z-50 bg-white border-b border-solid border-neutral-200', className)}>
       <div
         className="h-16 mx-auto max-w-[750px] flex items-center justify-between"
         style={{
@@ -8,7 +11,7 @@ const Header: React.FC = () => {
           paddingRight: 'max(16px, env(safe-area-inset-right))',
         }}
       >
-        <div className="flex gap-2 items-center font-semibold">
+        <Link href="/" className="flex gap-2 items-center font-semibold">
           <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
             <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
               <path d="M7 20h10m-7 0c5.5-2.5.8-6.4 3-10" />
@@ -16,16 +19,9 @@ const Header: React.FC = () => {
             </g>
           </svg>
           Spross
-        </div>
-        <a href="https://wxad.design">
-          <svg
-            className="block w-24"
-            width="1618"
-            height="262"
-            viewBox="0 0 1618 262"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+        </Link>
+        <Link href="https://wxad.design">
+          <svg className="block w-24" viewBox="0 0 1618 262" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clipPath="url(#clip0_5335_12847)">
               <path
                 fillRule="evenodd"
@@ -51,7 +47,7 @@ const Header: React.FC = () => {
               </clipPath>
             </defs>
           </svg>
-        </a>
+        </Link>
       </div>
     </div>
   );

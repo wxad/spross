@@ -1,5 +1,5 @@
 import React from 'react';
-import Highlight, { defaultProps } from 'prism-react-renderer';
+import { Highlight } from 'prism-react-renderer';
 import useMeasure from 'react-use-measure';
 import copy from 'copy-to-clipboard';
 import { AnimatePresence, motion, MotionConfig } from 'framer-motion';
@@ -99,7 +99,7 @@ const CodeBlock = ({ children, initialHeight = 0 }: { children: string; initialH
         </MotionConfig>
       </button>
       {/* @ts-ignore */}
-      <Highlight {...defaultProps} theme={theme} code={children} language="jsx">
+      <Highlight theme={theme} code={children} language="jsx">
         {({ className, tokens, getLineProps, getTokenProps }) => (
           <motion.pre
             className={styles.wrapper}

@@ -24,7 +24,7 @@ const Installation = () => {
 
   return (
     <div>
-      <h2>安装</h2>
+      <h2 className="mb-3 font-semibold">Installation</h2>
       <code className={styles.code} onClick={onCopy}>
         npm install spross{' '}
         <button aria-label="Copy code" className={styles.copy}>
