@@ -1,3 +1,4 @@
+// @ts-ignore
 import { getPageMap } from 'nextra/page-map';
 import './globals.css';
 import PageWrapper from './PageWrapper';

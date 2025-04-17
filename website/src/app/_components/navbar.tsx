@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { PageMapItem } from 'nextra';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

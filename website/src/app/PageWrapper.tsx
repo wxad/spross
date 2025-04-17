@@ -4,14 +4,17 @@ import { NextraTheme } from './_components/nextra-theme';
 import type { PageMapItem } from 'nextra';
 import { usePathname } from 'next/navigation';
 
-const PageWrapper = (props: { pageMap: PageMapItem[]; children: React.ReactNode }) => {
+const PageWrapper: React.FC<{
+  pageMap: PageMapItem[];
+  children: React.ReactNode;
+}> = (props) => {
   const { pageMap, children } = props;
 
   // 获取当前路径
   const pathname = usePathname();
 
   if (pathname === '/') {
-    return children;
+    return <>{children}</>;
   }
 
   return <NextraTheme pageMap={pageMap}>{children}</NextraTheme>;
