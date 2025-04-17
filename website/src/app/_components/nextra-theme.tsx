@@ -1,14 +1,11 @@
-import Header from '@/components/Header';
 import type { PageMapItem } from 'nextra';
 import { version } from 'nextra/package.json';
-import type { FC, ReactNode } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { Footer } from './footer';
-import Navbar from './navbar';
-// import { Sidebar } from './sidebar';
+import Navbar from './Navbar';
 
-export const NextraTheme: FC<{
-  children: ReactNode;
+export const NextraTheme: React.FC<{
+  children: React.ReactNode;
   pageMap: PageMapItem[];
 }> = ({ children, pageMap }) => {
   return (
@@ -64,9 +61,7 @@ export const NextraTheme: FC<{
         <div />
         <Navbar pageMap={pageMap} />
         <div className="flex lg:py-16 px-4 lg:pl-0 gap-4 xl:pr-[290px]">
-          <div className="max-w-[672px] w-full mx-auto relative">
-            {children}
-          </div>
+          <div className="max-w-[672px] w-full mx-auto relative">{children}</div>
         </div>
       </div>
     </>

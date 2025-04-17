@@ -1,8 +1,7 @@
 import type { Heading } from 'nextra';
-import type { FC } from 'react';
+import React from 'react';
 
-export const TOC: FC<{ toc: Heading[] }> = ({ toc }) => {
-  console.log('[yijie]', toc);
+const TOC: React.FC<{ toc: Heading[] }> = ({ toc }) => {
   return (
     <div className="absolute left-[calc(100%+64px)] top-0 h-full">
       <aside className="w-[240px] hidden xl:block sticky top-16 h-[calc(100vh-8rem)]">
@@ -26,6 +25,7 @@ export const TOC: FC<{ toc: Heading[] }> = ({ toc }) => {
                   className="text-[13px] hover:text-neutral-900 transition-colors ml-5 h-5 inline-block truncate text-neutral-600"
                   href={`#${heading.id}`}
                 >
+                  {/* @ts-ignore */}
                   {heading.value}
                 </a>
               </li>
@@ -36,3 +36,5 @@ export const TOC: FC<{ toc: Heading[] }> = ({ toc }) => {
     </div>
   );
 };
+
+export default TOC;

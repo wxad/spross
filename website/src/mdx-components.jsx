@@ -1,5 +1,5 @@
 import { useMDXComponents as getNextraComponents } from 'nextra/mdx-components';
-import { TOC } from './app/_components/toc';
+import TOC from './app/_components/toc';
 
 const a = ({ children, href }) => (
   <a
