@@ -41,19 +41,22 @@ export interface SprossPopoverProps {
 
 type SprossMessageFunc = (config: SprossMessageProps | string) => void;
 
+type SprossMessageIntent = "info" | "success" | "warning" | "danger";
+
 export interface SprossMessage
   extends React.ForwardRefExoticComponent<SprossMessageProps & React.RefAttributes<HTMLDivElement>> {
-  normal: SprossMessageFunc;
-  primary: SprossMessageFunc;
+  info: SprossMessageFunc;
   success: SprossMessageFunc;
   warning: SprossMessageFunc;
   danger: SprossMessageFunc;
 }
 
 export interface SprossMessageState {
-  collapsable: false;
-  sameCollapsable: false;
-  messages: { id: string }[];
+  collapsed: boolean;
+  collapsible: boolean;
+  sameCollapsible: boolean;
+  sameCollapsed: boolean;
+  messages: { id: string; intent: SprossMessageIntent }[];
 }
 
 declare global {
@@ -76,8 +79,15 @@ export interface SprossMessageProps {
   // getContainer, default to document.body
   getContainer?: () => HTMLElement;
   // intent
-  intent?: "normal" | "primary" | "success" | "warning" | "danger";
+  intent?: SprossMessageIntent;
   // onClose
   onClose?: () => void;
-
+  // onMouseEnter
+  onMouseEnter?: () => void;
+  // onMouseLeave
+  onMouseLeave?: () => void;
+  // set collapsible to true to collapse all messages
+  collapsible?: boolean;
+  // set sameCollapsible to true to collapse all messages with the same intent
+  sameCollapsible?: boolean;
 }
