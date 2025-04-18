@@ -51,7 +51,7 @@ const Basic = () => {
     return () => pane.dispose();
   }, []);
 
-  const autoScaleRange = [params.min, params.max];
+  const autoScaleRange = [params.min, params.max] as [number, number];
 
   return (
     <div>

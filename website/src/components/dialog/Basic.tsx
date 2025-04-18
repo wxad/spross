@@ -36,8 +36,14 @@ const Basic = () => {
 
   return (
     <div>
-      <CodeBox className="pt-[80px]">
+      <CodeBox className="pt-[80px] gap-10 flex-wrap">
         <div ref={tweakpaneContainerRef} className="absolute top-2 right-2 w-[250px] grayscale opacity-90" />
+        <button className="button" onClick={() => setVisible(true)}>
+          {params.originAware ? 'origin-aware' : 'origin-unaware'}
+        </button>
+        <button className="button" onClick={() => setVisible(true)}>
+          {params.originAware ? 'origin-aware' : 'origin-unaware'}
+        </button>
         <button className="button" onClick={() => setVisible(true)}>
           {params.originAware ? 'origin-aware' : 'origin-unaware'}
         </button>
