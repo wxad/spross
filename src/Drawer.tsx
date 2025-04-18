@@ -1,19 +1,7 @@
 'use client';
 
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
-import {
-  useFloating,
-  useClick,
-  useDismiss,
-  useRole,
-  useInteractions,
-  useMergeRefs,
-  FloatingPortal,
-  FloatingFocusManager,
-  FloatingOverlay,
-  useId,
-} from '@floating-ui/react';
-import { Dialog, DialogContent, DialogClose } from './ModalBase';
+import React, { useEffect, useRef } from 'react';
+import { Modal, ModalContent } from './ModalBase';
 
 import { SprossDrawerProps } from './types';
 
@@ -135,8 +123,6 @@ const Drawer: React.FC<SprossDrawerProps> = ({
           `[data-spross-drawer-step][data-spross-drawer-step-index="${step}"]`,
         ) as HTMLDivElement | undefined;
 
-        console.log('[yijie]', currentStepEl);
-
         if (currentStepEl) {
           stepsRef.current.style.height = `${currentStepEl.clientHeight}px`;
         }
@@ -145,14 +131,15 @@ const Drawer: React.FC<SprossDrawerProps> = ({
   }, [steps, step]);
 
   return (
-    <Dialog open={visible} onOpenChange={onVisibleChange}>
-      <DialogContent
+    <Modal open={visible} onOpenChange={onVisibleChange}>
+      <ModalContent
         data-spross-drawer-content
         data-spross-drawer-placement={placement}
         style={elevated ? {} : paddingStylePack}
+        type="drawer"
       >
         {steps ? (
-          <div data-spross-drawer-steps ref={stepsRef}>
+          <div data-spross-drawer-steps data-spross-drawer-step-transition-type={stepTransitionType} ref={stepsRef}>
             {steps.map((currentStep, index) => (
               <div
                 key={index}
@@ -170,8 +157,8 @@ const Drawer: React.FC<SprossDrawerProps> = ({
         ) : (
           children
         )}
-      </DialogContent>
-    </Dialog>
+      </ModalContent>
+    </Modal>
   );
 };
 

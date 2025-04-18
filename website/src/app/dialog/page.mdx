@@ -1,5 +1,20 @@
+import Basic from '@/components/dialog/Basic';
+import AutoScale from '@/components/dialog/AutoScale';
+
 # Dialog
 
 Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.
 
-## 
+## Basic Usage
+
+By default, dialog will transform from the click position. It scales up from `0.8` considering the transition shouldn't be too drastic:
+
+<Basic />
+
+## Auto Scale
+
+use `autoScale` to automatically scale when the window is too small or large.
+
+set `true` to enable auto scaling, set `autoScaleRange` to define the size range admitted for scaling, the default range is `[0.75, 1]`:
+
+<AutoScale />

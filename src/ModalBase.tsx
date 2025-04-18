@@ -7,22 +7,21 @@ import {
   useInteractions,
   useMergeRefs,
   FloatingPortal,
-  FloatingFocusManager,
   FloatingOverlay,
   useTransitionStatus,
 } from '@floating-ui/react';
 
-interface DialogOptions {
+interface ModalOptions {
   initialOpen?: boolean;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
 }
 
-export function useDialog({
+export function useModal({
   initialOpen = false,
   open: controlledOpen,
   onOpenChange: setControlledOpen,
-}: DialogOptions = {}) {
+}: ModalOptions = {}) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
 
   const open = controlledOpen ?? uncontrolledOpen;
@@ -54,38 +53,38 @@ export function useDialog({
   );
 }
 
-type ContextType = ReturnType<typeof useDialog> | null;
+type ContextType = ReturnType<typeof useModal> | null;
 
-const DialogContext = React.createContext<ContextType>(null);
+const ModalContext = React.createContext<ContextType>(null);
 
-export const useDialogContext = () => {
-  const context = React.useContext(DialogContext);
+export const useModalContext = () => {
+  const context = React.useContext(ModalContext);
 
   if (context == null) {
-    throw new Error('Dialog components must be wrapped in <Dialog />');
+    throw new Error('Modal components must be wrapped in <Modal />');
   }
 
   return context;
 };
 
-export function Dialog({
+export function Modal({
   children,
   ...options
 }: {
   children: React.ReactNode;
-} & DialogOptions) {
-  const dialog = useDialog(options);
-  return <DialogContext.Provider value={dialog}>{children}</DialogContext.Provider>;
+} & ModalOptions) {
+  const modal = useModal(options);
+  return <ModalContext.Provider value={modal}>{children}</ModalContext.Provider>;
 }
 
-interface DialogTriggerProps {
+interface ModalTriggerProps {
   children: React.ReactNode;
   asChild?: boolean;
 }
 
-export const DialogTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & DialogTriggerProps>(
-  function DialogTrigger({ children, asChild = false, ...props }, propRef) {
-    const context = useDialogContext();
+export const ModalTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTMLElement> & ModalTriggerProps>(
+  function ModalTrigger({ children, asChild = false, ...props }, propRef) {
+    const context = useModalContext();
     const childrenRef = (children as any).ref;
     const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
 
@@ -115,20 +114,21 @@ export const DialogTrigger = React.forwardRef<HTMLElement, React.HTMLProps<HTMLE
   },
 );
 
-export const DialogContent = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(function DialogContent(
+export const ModalContent = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(function ModalContent(
   props,
   propRef,
 ) {
-  const { context: floatingContext, ...context } = useDialogContext();
+  const { context: floatingContext, ...context } = useModalContext();
   const { isMounted, status } = useTransitionStatus(floatingContext);
   const ref = useMergeRefs([context.refs.setFloating, propRef]);
+  const { type, ...otherProps } = props;
 
   return (
     isMounted && (
       <FloatingPortal>
-        <FloatingOverlay data-status={status} data-spross-modal-overlay lockScroll>
-          <div ref={ref} {...context.getFloatingProps(props)} data-status={status}>
-            {props.children}
+        <FloatingOverlay data-status={status} data-spross-modal-overlay={type} lockScroll>
+          <div ref={ref} {...context.getFloatingProps(otherProps)} data-status={status}>
+            {otherProps.children}
           </div>
         </FloatingOverlay>
       </FloatingPortal>
@@ -136,9 +136,9 @@ export const DialogContent = React.forwardRef<HTMLDivElement, React.HTMLProps<HT
   );
 });
 
-export const DialogClose = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
-  function DialogClose(props, ref) {
-    const { setOpen } = useDialogContext();
+export const ModalClose = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
+  function ModalClose(props, ref) {
+    const { setOpen } = useModalContext();
     return <button type="button" {...props} ref={ref} onClick={() => setOpen(false)} />;
   },
 );

@@ -264,10 +264,17 @@ html {
   fill: hsl(220, 3%, 45%);
 }
 
-[data-spross-modal-overlay] {
+[data-spross-modal-overlay='drawer'] {
   z-index: var(--z-index-spross-modal);
   background: rgba(0, 0, 0, 0.4);
   overflow: hidden !important;
+}
+
+[data-spross-modal-overlay='dialog'] {
+  z-index: var(--z-index-spross-modal);
+  background: rgba(0, 0, 0, 0.4);
+  display: grid;
+  /* place-items: center; */
 }
 
 [data-spross-drawer-content] {
@@ -284,7 +291,7 @@ html {
 [data-spross-drawer-content][data-spross-drawer-placement='right'] {
   top: 0;
   bottom: 0;
-  min-width: 280px;
+  min-width: 200px;
 }
 
 [data-spross-drawer-content][data-spross-drawer-placement='left'] {
@@ -359,7 +366,16 @@ html {
   left: 0;
   width: 100%;
   height: auto;
+}
+
+[data-spross-drawer-steps][data-spross-drawer-step-transition-type='fade'],
+[data-spross-drawer-step][data-spross-drawer-step-transition-type='fade'] {
   transition: all 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+[data-spross-drawer-steps][data-spross-drawer-step-transition-type='slide'],
+[data-spross-drawer-step][data-spross-drawer-step-transition-type='slide'] {
+  transition: all 0.8s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 [data-spross-drawer-step][data-spross-drawer-step-transition-type='fade'][data-spross-drawer-step-prev='true'],
@@ -383,4 +399,35 @@ html {
 [data-spross-drawer-step][data-spross-drawer-step-transition-type='slide'][data-spross-drawer-step-active='true'] {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+}
+
+[data-spross-dialog-content-wrapper] {
+  margin: auto;
+  width: fit-content;
+  min-width: 520px;
+  min-height: 380px;
+  padding: 50px;
+  pointer-events: none;
+  transition-property: opacity, transform;
+}
+
+[data-spross-dialog-content] {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  overflow: auto;
+  pointer-events: initial;
+  border-radius: 10px;
+}
+
+[data-spross-dialog-content-wrapper][data-status='open'],
+[data-spross-dialog-content-wrapper][data-status='close'] {
+  transition-duration: 0.3s;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+[data-spross-dialog-content-wrapper][data-status='initial'],
+[data-spross-dialog-content-wrapper][data-status='close'] {
+  opacity: 0;
+  transform: scale(0.8);
 }

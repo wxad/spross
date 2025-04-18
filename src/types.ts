@@ -92,6 +92,25 @@ export interface SprossMessageProps {
   sameCollapsible?: boolean;
 }
 
+export interface SprossDialogProps {
+  children?: React.ReactNode;
+  // The className of the dialog content
+  className?: string;
+  // The style of the dialog content
+  style?: React.CSSProperties;
+  // Whether to show the dialog
+  visible?: boolean;
+  // The z-index of the dialog
+  zIndex?: number | string;
+  // onVisibleChange callback
+  onVisibleChange?: (visible: boolean) => void;
+  // Whether to transform from the click position
+  originAware?: boolean;
+  // Whether to scale the dialog content
+  autoScale?: boolean;
+  // The range of the dialog content
+  autoScaleRange?: [number, number];
+}
 
 export interface SprossDrawerProps {
   children?: React.ReactNode;
