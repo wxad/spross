@@ -46,7 +46,7 @@ const h2 = ({ id, children }) => (
 const p = ({ children }) => <p className="text-[16px] mb-4 text-neutral-700">{children}</p>;
 
 const code = ({ children }) => (
-  <code className="p-1 bg-neutral-100 rounded-md font-mono text-[13.5px]">{children}</code>
+  <code className="px-1 py-0.5 bg-neutral-100 rounded-md font-mono text-[13.5px]">{children}</code>
 );
 
 const defaultComponents = getNextraComponents({

@@ -28,7 +28,7 @@ const meta: MetaRecord = {
     "title": "About",
     "items": {
       "about": {
-        "title": "What is Spross?",
+        "title": "About Spross",
         "href": "/about"
       }
     }

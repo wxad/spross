@@ -11,6 +11,7 @@
 }
 
 body {
+  overflow: hidden;
   padding-top: 0;
   background-color: #fff;
   -webkit-font-smoothing: antialiased;

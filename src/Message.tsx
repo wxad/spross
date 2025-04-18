@@ -27,6 +27,87 @@ const defaultProps: SprossMessageProps = {
   onClose: undefined,
 };
 
+// 更新样式的核心函数
+const updateStyles = () => {
+  setTimeout(() => {
+    const { messages, collapsed, sameCollapsed } = window.sprossMessageState;
+    if (sameCollapsed) {
+      // 倒着遍历，将相同 intent 的 message 放在一起，构成一个二级数组
+      const messagesIntented = [];
+      const intentGroups = new Map();
+
+      // 先按 intent 分组
+      messages.forEach((message) => {
+        if (!intentGroups.has(message.intent)) {
+          intentGroups.set(message.intent, []);
+        }
+        intentGroups.get(message.intent).push(message);
+      });
+
+      // 按照原始顺序将分组后的消息放入数组
+      const seenIntents = new Set();
+      messages.forEach((message) => {
+        if (!seenIntents.has(message.intent)) {
+          seenIntents.add(message.intent);
+          messagesIntented.push(intentGroups.get(message.intent));
+        }
+      });
+
+      const messagesIntentedFlat = messagesIntented.flat();
+
+      // 计算每个组的累计偏移值
+      const groupOffsets = messagesIntented.map((group, index) => {
+        let offset = 0;
+        // 从当前组往后计算所有组的偏移值，只考虑每组最后三个消息
+        for (let i = index + 1; i < messagesIntented.length; i++) {
+          const nextGroup = messagesIntented[i];
+          const visibleCount = Math.min(3, nextGroup.length); // 最多只考虑三个消息
+          if (visibleCount === 1) {
+            offset += 68;
+          } else {
+            offset += 68 + 7 * (visibleCount - 1);
+          }
+        }
+        return offset;
+      });
+
+      messagesIntented.forEach((messages, groupIndex) => {
+        messages.forEach(({ id }, index) => {
+          const message = document.querySelector(`[data-spross-message-container][data-id="${id}"]`) as HTMLDivElement;
+
+          if (sameCollapsed) {
+            // 每组中最后三个消息显示，其他的隐藏
+            const visible = index >= messages.length - 3;
+            message.style.opacity = visible ? '1' : '0';
+            message.style.visibility = visible ? 'visible' : 'hidden';
+
+            // 计算当前消息的偏移值
+            const groupOffset = groupOffsets[groupIndex];
+            const messageOffset = 14 * Math.min(2, messages.length - 1 - index); // 最多只考虑三个消息的偏移
+            const scale = 1 - 0.05 * Math.min(2, messages.length - 1 - index); // 最多只考虑三个消息的缩放
+
+            message.style.transform = `translate3d(0, ${groupOffset + messageOffset}px, 0) scale(${scale})`;
+          }
+        });
+      });
+    } else {
+      messages.forEach(({ id }, index) => {
+        const message = document.querySelector(`[data-spross-message-container][data-id="${id}"]`) as HTMLDivElement;
+        const visible = index >= messages.length - 3;
+        message.style.opacity = visible ? '1' : '0';
+        message.style.visibility = visible ? 'visible' : 'hidden';
+        if (collapsed) {
+          message.style.transform = `translate3d(0, ${14 * (messages.length - 1 - index)}px, 0) scale(${
+            1 - 0.05 * (messages.length - 1 - index)
+          })`;
+        } else {
+          message.style.transform = `translate3d(0, ${68 * (messages.length - 1 - index)}px, 0)`;
+        }
+      });
+    }
+  }, 50);
+};
+
 const Message = forwardRef<HTMLDivElement, SprossMessageProps>(
   (
     {
@@ -152,90 +233,6 @@ const Message = forwardRef<HTMLDivElement, SprossMessageProps>(
   },
 ) as SprossMessage;
 
-// 更新样式的核心函数
-const updateStyles = () => {
-  setTimeout(() => {
-    const { messages, collapsed, sameCollapsed } = window.sprossMessageState;
-
-    console.log('[yijie]', collapsed, sameCollapsed);
-
-    if (sameCollapsed) {
-      // 倒着遍历，将相同 intent 的 message 放在一起，构成一个二级数组
-      const messagesIntented = [];
-      const intentGroups = new Map();
-
-      // 先按 intent 分组
-      messages.forEach((message) => {
-        if (!intentGroups.has(message.intent)) {
-          intentGroups.set(message.intent, []);
-        }
-        intentGroups.get(message.intent).push(message);
-      });
-
-      // 按照原始顺序将分组后的消息放入数组
-      const seenIntents = new Set();
-      messages.forEach((message) => {
-        if (!seenIntents.has(message.intent)) {
-          seenIntents.add(message.intent);
-          messagesIntented.push(intentGroups.get(message.intent));
-        }
-      });
-
-      const messagesIntentedFlat = messagesIntented.flat();
-
-      // 计算每个组的累计偏移值
-      const groupOffsets = messagesIntented.map((group, index) => {
-        let offset = 0;
-        // 从当前组往后计算所有组的偏移值，只考虑每组最后三个消息
-        for (let i = index + 1; i < messagesIntented.length; i++) {
-          const nextGroup = messagesIntented[i];
-          const visibleCount = Math.min(3, nextGroup.length); // 最多只考虑三个消息
-          if (visibleCount === 1) {
-            offset += 68;
-          } else {
-            offset += 68 + 7 * (visibleCount - 1);
-          }
-        }
-        return offset;
-      });
-
-      messagesIntented.forEach((messages, groupIndex) => {
-        messages.forEach(({ id }, index) => {
-          const message = document.querySelector(`[data-spross-message-container][data-id="${id}"]`) as HTMLDivElement;
-
-          if (sameCollapsed) {
-            // 每组中最后三个消息显示，其他的隐藏
-            const visible = index >= messages.length - 3;
-            message.style.opacity = visible ? '1' : '0';
-            message.style.visibility = visible ? 'visible' : 'hidden';
-
-            // 计算当前消息的偏移值
-            const groupOffset = groupOffsets[groupIndex];
-            const messageOffset = 14 * Math.min(2, messages.length - 1 - index); // 最多只考虑三个消息的偏移
-            const scale = 1 - 0.05 * Math.min(2, messages.length - 1 - index); // 最多只考虑三个消息的缩放
-
-            message.style.transform = `translate3d(0, ${groupOffset + messageOffset}px, 0) scale(${scale})`;
-          }
-        });
-      });
-    } else {
-      messages.forEach(({ id }, index) => {
-        const message = document.querySelector(`[data-spross-message-container][data-id="${id}"]`) as HTMLDivElement;
-        const visible = index >= messages.length - 3;
-        message.style.opacity = visible ? '1' : '0';
-        message.style.visibility = visible ? 'visible' : 'hidden';
-        if (collapsed) {
-          message.style.transform = `translate3d(0, ${14 * (messages.length - 1 - index)}px, 0) scale(${
-            1 - 0.05 * (messages.length - 1 - index)
-          })`;
-        } else {
-          message.style.transform = `translate3d(0, ${68 * (messages.length - 1 - index)}px, 0)`;
-        }
-      });
-    }
-  }, 50);
-};
-
 const newInstance = (props: SprossMessageProps) => {
   const { onClose, getContainer, intent, collapsible, sameCollapsible, ...otherProps } = props;
   const id = Math.random().toString(36).substring(2, 15);
@@ -260,12 +257,10 @@ const newInstance = (props: SprossMessageProps) => {
     if (collapsible !== undefined) {
       window.sprossMessageState.collapsible = collapsible;
       window.sprossMessageState.collapsed = collapsible;
-      window.sprossMessageState.sameCollapsible = false;
     }
     if (sameCollapsible !== undefined) {
       window.sprossMessageState.sameCollapsible = sameCollapsible;
       window.sprossMessageState.sameCollapsed = sameCollapsible;
-      window.sprossMessageState.collapsible = false;
     }
 
     newMessages.push(newObj);

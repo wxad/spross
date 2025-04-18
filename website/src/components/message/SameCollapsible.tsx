@@ -18,7 +18,7 @@ const Basic = () => {
                 content: `This is a ${intent} message.`,
                 sameCollapsible: true,
                 collapsible: false,
-                duration: 0,
+                duration: 5,
                 closable: true,
               });
             }}
@@ -46,7 +46,7 @@ const Basic = () => {
   Spross.Message.info({
     content: 'This is a info message.',
     sameCollapsible: true,
-    duration: 0,
+    duration: 5,
     closable: true,
   });
 }`}</CodeBlock>

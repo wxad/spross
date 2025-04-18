@@ -91,3 +91,33 @@ export interface SprossMessageProps {
   // set sameCollapsible to true to collapse all messages with the same intent
   sameCollapsible?: boolean;
 }
+
+
+export interface SprossDrawerProps {
+  children?: React.ReactNode;
+  // The className of the drawer content
+  className?: string;
+  // Whether to elevate the drawer
+  elevated?: boolean;
+  // Whether to show the mask
+  maskVisible?: boolean;
+  // onVisibleChange callback
+  onVisibleChange?: (visible: boolean) => void;
+  // The padding of the drawer content
+  padding?: number;
+  // The placement of the drawer
+  placement?: "top" | "left" | "right" | "bottom";
+  // The style of the drawer content
+  style?: React.CSSProperties;
+  // Whether to show the drawer
+  visible?: boolean;
+  // The z-index of the drawer
+  zIndex?: number | string;
+
+  // The steps of the drawer transition
+  steps?: React.ReactNode[];
+  // The current step of the drawer transition
+  step?: number;
+  // The type of the drawer transition
+  stepTransitionType?: "slide" | "fade";
+}

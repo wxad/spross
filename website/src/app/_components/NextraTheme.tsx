@@ -8,7 +8,7 @@ const NextraTheme: React.FC<{
   pageMap: PageMapItem[];
 }> = ({ children, pageMap }) => {
   return (
-    <>
+    <div className="relative h-screen overflow-auto scrollbar-custom bg-white" data-spross-drawer-wrapper>
       <div className="sticky top-0 mb-[90px] z-50 bg-white border-b border-solid border-neutral-200 lg:hidden">
         <div
           className="h-16 mx-auto flex items-center justify-between"
@@ -57,13 +57,12 @@ const NextraTheme: React.FC<{
         </div>
       </div>
       <div className="lg:grid grid-cols-[240px_1fr] gap-4">
-        <div />
         <Navbar pageMap={pageMap} />
-        <div className="flex lg:py-16 px-4 lg:pl-0 gap-4 xl:pr-[290px]">
+        <div className="flex pb-16 lg:py-16 px-4 lg:pl-0 gap-4 xl:pr-[290px]">
           <div className="max-w-[672px] w-full mx-auto relative">{children}</div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

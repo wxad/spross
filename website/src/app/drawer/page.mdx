@@ -1,3 +1,31 @@
-# Getting Started
+import Basic from '@/components/drawer/Basic';
+import Elevated from '@/components/drawer/Elevated';
+import Steps from '@/components/drawer/Steps';
 
-Sonner is an opinionated toast component for React. You can read more about why and how it was built [here](https://emilkowal.ski/ui/building-a-toast-component).
+# Drawer
+
+The navigation drawers (or "sidebars") provide ergonomic access to destinations in a site or app functionality such as switching accounts.
+
+Inspirations are [here](https://wxad.design/abc/drawer).
+
+## Basic Usage
+
+`placement`, `padding` Props, `border-radius` will added automatically when `padding` is set:
+
+<Basic />
+
+## Elevated
+
+Elevated drawer will scale down `data-spross-drawer-wrapper` when open, you need to set this attribute manually to the wrapper element.
+
+When `elevation` is set, `padding` prop will be ignored:
+
+<Elevated />
+
+## Steps
+
+`step` prop is used to control the steps of the drawer transition. You need to use it with `steps` & `stepTransitionType` prop.
+
+There are two types of `stepTransitionType` you can choose, `slide` & `fade`:
+
+<Steps />

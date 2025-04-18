@@ -11,7 +11,7 @@ const Navbar = (props: { pageMap: PageMapItem[] }) => {
   const navs = pageMap.filter((item) => !!item.items);
 
   return (
-    <nav className="pt-5 pb-4 dotted dotted-right bg-neutral-50 fixed top-0 h-screen hidden w-[240px] lg:flex flex-col">
+    <nav className="pt-5 pb-4 dotted dotted-right bg-neutral-50 sticky top-0 h-screen hidden w-[240px] lg:flex flex-col">
       <div className="flex flex-col px-4">
         <div className="flex justify-between items-center pb-3.5 dotted-bottom">
           <Link className="flex items-center gap-2" href="/">
