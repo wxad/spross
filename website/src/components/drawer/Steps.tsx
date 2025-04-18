@@ -57,7 +57,7 @@ const Basic = () => {
 
   return (
     <div>
-      <CodeBox className="pt-[80px]">
+      <CodeBox className="pt-[120px]">
         <div ref={tweakpaneContainerRef} className="absolute top-2 right-2 w-[250px] grayscale opacity-90" />
         <button className="button" onClick={() => setVisible(true)}>
           steps
