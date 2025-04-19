@@ -9,6 +9,8 @@ import {
   FloatingPortal,
   FloatingOverlay,
   useTransitionStatus,
+  UseFloatingReturn,
+  UseInteractionsReturn,
 } from '@floating-ui/react';
 
 interface ModalOptions {
@@ -17,11 +19,16 @@ interface ModalOptions {
   onOpenChange?: (open: boolean) => void;
 }
 
+interface UseModalReturn extends UseFloatingReturn, UseInteractionsReturn {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
+
 export function useModal({
   initialOpen = false,
   open: controlledOpen,
   onOpenChange: setControlledOpen,
-}: ModalOptions = {}) {
+}: ModalOptions = {}): UseModalReturn {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(initialOpen);
 
   const open = controlledOpen ?? uncontrolledOpen;
