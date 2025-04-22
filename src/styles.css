@@ -1,7 +1,7 @@
 html {
-  --z-index-spross-modal: 1000;
-  --z-index-spross-popup: 1010;
-  --z-index-spross-message: 1020;
+  --z-index-spross-modal: 1040;
+  --z-index-spross-popup: 1050;
+  --z-index-spross-message: 1060;
   --spross-message-width: 356px;
   --spross-message-gap: 14px;
 }
