@@ -1,6 +1,6 @@
 {
   "name": "spross",
-  "version": "0.0.3",
+  "version": "0.0.8-alpha.0",
   "description": "Spross - Interface overlays that 'sprout' from elements",
   "exports": {
     ".": {
@@ -58,8 +58,8 @@
     "typescript": "^4.8.4"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0 || ^19.0.0-rc",
-    "react-dom": "^18.0.0 || ^19.0.0 || ^19.0.0-rc"
+    "react": "~16.14.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc",
+    "react-dom": "~16.14.0 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc"
   },
   "packageManager": "pnpm@8.12.1",
   "dependencies": {
