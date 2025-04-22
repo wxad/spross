@@ -42,7 +42,7 @@ export interface SprossPopoverProps {
 
 type SprossMessageFunc = (config: SprossMessageProps | string) => void;
 
-type SprossMessageIntent = "info" | "success" | "warning" | "danger";
+type SprossMessageIntent = "info" | "success" | "warning" | "danger" | "error";
 
 export interface SprossMessage
   extends React.ForwardRefExoticComponent<SprossMessageProps & React.RefAttributes<HTMLDivElement>> {
@@ -50,6 +50,7 @@ export interface SprossMessage
   success: SprossMessageFunc;
   warning: SprossMessageFunc;
   danger: SprossMessageFunc;
+  error: SprossMessageFunc;
 }
 
 export interface SprossMessageState {
