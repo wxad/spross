@@ -4,7 +4,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react
 import * as ReactDOM from 'react-dom';
 import { SprossMessageProps, SprossMessage } from './types';
 
-const INTENTS = ['info', 'success', 'warning', 'danger'] as const;
+const INTENTS = ['info', 'success', 'warning', 'danger', 'error'] as const;
 
 const ICONS = {
   info: 'M9 16C5.13401 16 2 12.866 2 9C2 5.13401 5.13401 2 9 2C12.866 2 16 5.13401 16 9C16 12.866 12.866 16 9 16ZM8.25 4.5V6H9.75V4.5H8.25ZM8.25 13.5H9.75V7H8.25V13.5Z',
@@ -13,6 +13,8 @@ const ICONS = {
   warning:
     'M9.4341 2.75983L16.5725 15.252C16.7095 15.4918 16.6262 15.7972 16.3865 15.9342C16.3109 15.9774 16.2254 16.0001 16.1384 16.0001H1.86157C1.58543 16.0001 1.36157 15.7763 1.36157 15.5001C1.36157 15.4131 1.38428 15.3276 1.42745 15.252L8.56586 2.75983C8.70287 2.52007 9.00829 2.43677 9.24805 2.57378C9.32557 2.61807 9.38981 2.68231 9.4341 2.75983ZM8.24998 6.50012V12.0001H9.74998V6.50012H8.24998ZM8.24998 14.5001H9.74998V13.0001H8.24998V14.5001Z',
   danger:
+    'M9 16C5.13401 16 2 12.866 2 9C2 5.13401 5.13401 2 9 2C12.866 2 16 5.13401 16 9C16 12.866 12.866 16 9 16ZM8.25 4.5V11H9.75V4.5H8.25ZM8.25 13.5H9.75V12H8.25V13.5Z',
+  error:
     'M9 16C5.13401 16 2 12.866 2 9C2 5.13401 5.13401 2 9 2C12.866 2 16 5.13401 16 9C16 12.866 12.866 16 9 16ZM8.25 4.5V11H9.75V4.5H8.25ZM8.25 13.5H9.75V12H8.25V13.5Z',
 };
 
@@ -52,8 +54,6 @@ const updateStyles = () => {
           messagesIntented.push(intentGroups.get(message.intent));
         }
       });
-
-      const messagesIntentedFlat = messagesIntented.flat();
 
       // 计算每个组的累计偏移值
       const groupOffsets = messagesIntented.map((group, index) => {

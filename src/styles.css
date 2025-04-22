@@ -240,12 +240,14 @@ html {
   fill: hsl(31, 92%, 45%);
 }
 
-[data-spross-message][data-spross-message-intent='danger'] {
+[data-spross-message][data-spross-message-intent='danger'],
+[data-spross-message][data-spross-message-intent='error'] {
   background-color: hsl(359, 100%, 97%);
   border-color: hsl(359, 100%, 94%);
 }
 
-[data-spross-message][data-spross-message-intent='danger'] [data-spross-message-prefix-icon] {
+[data-spross-message][data-spross-message-intent='danger'] [data-spross-message-prefix-icon],
+[data-spross-message][data-spross-message-intent='error'] [data-spross-message-prefix-icon] {
   fill: hsl(360, 100%, 45%);
 }
 
