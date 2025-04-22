@@ -20,6 +20,7 @@ import {
   Placement,
   limitShift,
   size,
+  autoPlacement,
 } from '@floating-ui/react';
 
 const ARROW_OFFSET = 10;
@@ -40,6 +41,7 @@ const placementMap = {
 } as const;
 
 export const defaultProps: SprossPopoverProps = {
+  autoPlacements: [],
   arrowed: true,
   children: undefined,
   mouseEnterDelay: 0,
@@ -79,6 +81,7 @@ const getTransformOrigin = ({ placement, x, y }: { placement: Placement; x: numb
 };
 
 const PopBase: React.FC<SprossPopoverProps & { type: 'popover' | 'tooltip' }> = ({
+  autoPlacements = defaultProps.autoPlacements,
   arrowed = defaultProps.arrowed,
   children = defaultProps.children,
   mouseEnterDelay = defaultProps.mouseEnterDelay,
@@ -113,7 +116,11 @@ const PopBase: React.FC<SprossPopoverProps & { type: 'popover' | 'tooltip' }> = 
     whileElementsMounted: autoUpdate,
     middleware: [
       !!offsetProp && offset(offsetProp),
-      flip(),
+      autoPlacements?.length
+        ? autoPlacement({
+            allowedPlacements: autoPlacements.map((placement) => placementMap[placement]),
+          })
+        : flip(),
       shift({
         limiter: limitShift({
           offset: 4,
@@ -123,7 +130,10 @@ const PopBase: React.FC<SprossPopoverProps & { type: 'popover' | 'tooltip' }> = 
       !!sizeProp &&
         size({
           apply({ availableWidth, availableHeight }: { availableWidth: number; availableHeight: number }) {
-            sizeProp(availableWidth, availableHeight);
+            sizeProp({
+              availableWidth,
+              availableHeight,
+            });
           },
         }),
       arrow({
