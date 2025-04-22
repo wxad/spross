@@ -2,6 +2,7 @@ import React from 'react';
 import { OpenChangeReason } from '@floating-ui/react';
 
 export interface SprossPopoverProps {
+  autoPlacements?: ("top" | "left" | "right" | "bottom" | "topLeft" | "topRight" | "bottomLeft" | "bottomRight" | "leftTop" | "leftBottom" | "rightTop" | "rightBottom")[]
   // Whether to show the arrow
   arrowed?: boolean;
   // The child element
@@ -30,7 +31,7 @@ export interface SprossPopoverProps {
   // Whether to use portal to render
   portal?: boolean;
   // The size of the popup content, the component will spit out the available space, and the business side needs to use it by itself
-  size?: (availableWidth: number, availableHeight: number) => void;
+  size?: (params: { availableWidth: number, availableHeight: number }) => void;
   // The trigger of the popup content
   trigger?: "hover" | "focus" | "click";
   // The outer control of the popup content
