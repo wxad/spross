@@ -11,7 +11,7 @@ const defaultProps: SprossDialogProps = {
   onVisibleChange: undefined,
   originAware: true,
   autoScale: true,
-  autoScaleRange: [0.75, 1],
+  autoScaleRange: [0.8, 1],
 };
 
 const Dialog: React.FC<SprossDialogProps> = ({
@@ -21,6 +21,9 @@ const Dialog: React.FC<SprossDialogProps> = ({
   originAware = defaultProps.originAware,
   autoScale = defaultProps.autoScale,
   autoScaleRange = defaultProps.autoScaleRange,
+  style,
+  className,
+  ...props
 }) => {
   const modalContentRef = useRef<HTMLDivElement>(null);
   useClickPosition({
@@ -53,8 +56,6 @@ const Dialog: React.FC<SprossDialogProps> = ({
     // 限制在指定范围内
     const clampedScale = Math.min(Math.max(scale, autoScaleRange[0]), autoScaleRange[1]);
 
-    console.log('[yijie]', windowWidth, windowHeight, requiredWidth, requiredHeight, scale, clampedScale);
-
     // @ts-ignore
     modalContentRef.current.style.zoom = `${clampedScale}`;
   };
@@ -71,9 +72,11 @@ const Dialog: React.FC<SprossDialogProps> = ({
   }, [modalContentRef, visible, autoScaleRange, autoScale]);
 
   return (
-    <Modal open={visible} onOpenChange={onVisibleChange}>
+    <Modal open={visible} onOpenChange={onVisibleChange} {...props}>
       <ModalContent type="dialog" data-spross-dialog-content-wrapper ref={modalContentRef}>
-        <div data-spross-dialog-content>{children}</div>
+        <div style={style} className={className} data-spross-dialog-content>
+          {children}
+        </div>
       </ModalContent>
     </Modal>
   );
