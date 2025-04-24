@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
-import * as ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { SprossMessageProps, SprossMessage } from './types';
 
 const INTENTS = ['info', 'success', 'warning', 'danger', 'error'] as const;
@@ -310,6 +310,8 @@ const newInstance = (props: SprossMessageProps) => {
 
   updateStyles();
 
+  const root = createRoot(container);
+
   const close = () => {
     if (onClose) {
       onClose();
@@ -320,12 +322,12 @@ const newInstance = (props: SprossMessageProps) => {
     container.style.transition = '0.15s cubic-bezier(0, 0, 0.2, 1) all';
     updateStyles();
     setTimeout(() => {
-      ReactDOM.unmountComponentAtNode(container);
+      root.unmount();
       container.parentNode?.removeChild(container);
     }, 300);
   };
 
-  ReactDOM.render(
+  root.render(
     <Message
       ref={(message) => {
         instance = message;
@@ -334,7 +336,6 @@ const newInstance = (props: SprossMessageProps) => {
       intent={intent}
       {...otherProps}
     />,
-    container,
   );
 
   // 将容器添加到目标元素
