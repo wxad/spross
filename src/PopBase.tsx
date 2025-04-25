@@ -159,10 +159,11 @@ const PopBase: React.FC<SprossPopoverProps & { type: 'popover' | 'tooltip' }> = 
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover, focus, click, dismiss]);
 
-  const childrenRef = (children as any).ref;
+  const childrenRef = (children as any)?.ref;
   const ref = useMergeRefs([context.refs.setReference, childrenRef]);
 
   let child = null;
+
   if (React.isValidElement(children) && children.type !== React.Fragment) {
     child = React.cloneElement(
       children,
