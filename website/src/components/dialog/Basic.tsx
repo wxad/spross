@@ -10,7 +10,7 @@ const Basic = () => {
   const [visible, setVisible] = useState(false);
 
   const [params, setParams] = useState({
-    originAware: true,
+    origin: true,
   });
 
   const tweakpaneContainerRef = useRef<HTMLDivElement>(null);
@@ -20,7 +20,7 @@ const Basic = () => {
       container: tweakpaneContainerRef.current as HTMLElement,
     });
 
-    pane.addBinding(params, 'originAware', {
+    pane.addBinding(params, 'origin', {
       type: 'boolean',
     });
     pane.on('change', (ev) => {
@@ -39,15 +39,15 @@ const Basic = () => {
       <CodeBox className="pt-[80px] gap-10 flex-wrap">
         <div ref={tweakpaneContainerRef} className="absolute top-2 right-2 w-[250px] grayscale opacity-90" />
         <button className="button" onClick={() => setVisible(true)}>
-          {params.originAware ? 'origin-aware' : 'origin-unaware'}
+          {params.origin ? 'origin-aware' : 'origin-unaware'}
         </button>
         <button className="button" onClick={() => setVisible(true)}>
-          {params.originAware ? 'origin-aware' : 'origin-unaware'}
+          {params.origin ? 'origin-aware' : 'origin-unaware'}
         </button>
         <button className="button" onClick={() => setVisible(true)}>
-          {params.originAware ? 'origin-aware' : 'origin-unaware'}
+          {params.origin ? 'origin-aware' : 'origin-unaware'}
         </button>
-        <Spross.Dialog visible={visible} onVisibleChange={setVisible} originAware={params.originAware}>
+        <Spross.Dialog visible={visible} onVisibleChange={setVisible} originAware={params.origin}>
           <div className="flex flex-col w-full h-full p-4">
             <div>
               <div className="grid gap-1.5 p-4 text-center sm:text-left">
@@ -282,7 +282,7 @@ const Basic = () => {
 const [visible, setVisible] = useState(false);
 
 <Spross.Dialog visible={visible} onVisibleChange={setVisible} ${
-        !params.originAware ? 'originAware={false}' : ''
+        !params.origin ? 'originAware={false}' : ''
       } />`}</CodeBlock>
     </div>
   );

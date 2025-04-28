@@ -11,8 +11,8 @@ const Basic = () => {
 
   const [params, setParams] = useState({
     autoScale: true,
-    min: 0.7,
-    max: 1.2,
+    min: 0.9,
+    max: 1,
   });
 
   const tweakpaneContainerRef = useRef<HTMLDivElement>(null);

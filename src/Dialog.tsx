@@ -11,7 +11,7 @@ const defaultProps: SprossDialogProps = {
   onVisibleChange: undefined,
   originAware: true,
   autoScale: true,
-  autoScaleRange: [0.8, 1],
+  autoScaleRange: [0.9, 1],
 };
 
 const Dialog: React.FC<SprossDialogProps> = ({
