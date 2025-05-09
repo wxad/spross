@@ -63,7 +63,7 @@
   },
   "packageManager": "pnpm@10.10.0",
   "dependencies": {
-    "@floating-ui/react": "0.26.28",
+    "@floating-ui/react": "0.27.8",
     "rc-select": "^14.16.6",
     "react-day-picker": "^9.6.7"
   }
