@@ -142,3 +142,25 @@ export interface SprossDrawerProps {
   // The type of the drawer transition
   stepTransitionType?: "slide" | "fade";
 }
+
+type SprossSelectOption = {
+  value?: string;
+  label: React.ReactNode;
+  title?: string;
+  options?: SprossSelectOption[];
+}
+
+export interface SprossSelectProps {
+  options: SprossSelectOption[];
+  value?: string;
+  onChange: (value: string) => void;
+  open?: boolean;
+  onVisibleChange?: (visible: boolean) => void;
+}
+
+export interface SprossDatePickerCaptionProps {
+  date: Date
+  maxDate: Date
+  minDate: Date
+  onDateChange: (date: Date, e: React.FormEvent<HTMLSelectElement>) => void
+}

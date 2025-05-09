@@ -1,0 +1,56 @@
+import React from 'react';
+import ReactDayPicker, { DayPicker } from 'react-day-picker';
+import { SprossDatePickerCaptionProps } from './types';
+
+export const today = new Date();
+
+export const getDefaultMaxDate = () => {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
+  date.setMonth(11, 31);
+  return date;
+};
+
+export const getDefaultMinDate = () => {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() - 4);
+  date.setMonth(0, 1);
+  return date;
+};
+
+const DatePicker = () => {
+  return (
+    <div>
+      <DayPicker
+        captionLayout="dropdown"
+        components={{
+          DropdownNav: () => {
+            return <div>nav</div>;
+          },
+          Nav: ({ onPreviousClick, onNextClick, previousMonth, nextMonth }) => (
+            <div data-spross-date-picker-caption-nav>
+              <div data-spross-date-picker-caption-nav-prev>
+                <svg width="18" height="18" viewBox="0 0 18 18" data-spross-date-picker-caption-nav-prev-icon>
+                  <path
+                    fillRule="evenodd"
+                    d="M14.303 6.69995L13.9495 6.3464C13.7542 6.15114 13.4376 6.15114 13.2424 6.3464L9.00048 10.5893L4.75709 6.3464C4.56183 6.15114 4.24525 6.15114 4.04999 6.3464L3.69643 6.69995C3.50117 6.89521 3.50117 7.2118 3.69643 7.40706L8.64618 12.3568C8.84144 12.5521 9.15803 12.5521 9.35329 12.3568L14.303 7.40706C14.4983 7.2118 14.4983 6.89521 14.303 6.69995Z"
+                  />
+                </svg>
+              </div>
+              <div data-spross-date-picker-caption-nav-next>
+                <svg width="18" height="18" viewBox="0 0 18 18" data-spross-date-picker-caption-nav-next-icon>
+                  <path
+                    fillRule="evenodd"
+                    d="M14.303 6.69995L13.9495 6.3464C13.7542 6.15114 13.4376 6.15114 13.2424 6.3464L9.00048 10.5893L4.75709 6.3464C4.56183 6.15114 4.24525 6.15114 4.04999 6.3464L3.69643 6.69995C3.50117 6.89521 3.50117 7.2118 3.69643 7.40706L8.64618 12.3568C8.84144 12.5521 9.15803 12.5521 9.35329 12.3568L14.303 7.40706C14.4983 7.2118 14.4983 6.89521 14.303 6.69995Z"
+                  />
+                </svg>
+              </div>
+            </div>
+          ),
+        }}
+      />
+    </div>
+  );
+};
+
+export default DatePicker;

@@ -30,6 +30,58 @@ const components = [
     href: '/poptool',
   },
   {
+    name: 'Select',
+    image: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="opacity-70">
+        <g clipPath="url(#doc-select_svg__clip0)">
+          <rect x="2" y="2" width="16" height="5" rx="0.5" fill="#DDE3E8" />
+          <rect x="2" y="17" width="16" height="5" rx="0.5" fill="#DDE3E8" />
+          <rect x="6" y="9" width="16" height="6" rx="0.5" fill="#FBCD2C" />
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M12.5 10.793c0-.891 1.077-1.337 1.707-.707l8.707 8.707c.63.63.184 1.707-.707 1.707H18.25a2 2 0 00-1.49.667l-2.514 2.809c-.612.684-1.745.25-1.745-.667V10.793zM16.684 19H21l-7-7v10l2.684-3z"
+            fill="#fff"
+          />
+          <path d="M14 22V12l7 7h-4.316L14 22z" fill="#324350" />
+        </g>
+        <defs>
+          <clipPath id="doc-select_svg__clip0">
+            <path fill="#fff" d="M0 0h24v24H0z" />
+          </clipPath>
+        </defs>
+      </svg>
+    ),
+    href: '/select',
+  },
+  {
+    name: 'DatePicker',
+    image: (
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <g clipPath="url(#doc-datepicker_svg__clip0)">
+          <rect x="1" y="4" width="22" height="16" rx="3" fill="#DDE3E8"></rect>
+          <path
+            d="M6.5 11H9v2.5H6.5V11zm6 4.5h-7V10h7v5.5zm0-8H12v-1h-1v1H7v-1H6v1h-.5a1 1 0 00-1 1v7c0 .55.45 1 1 1h7c.55 0 1-.45 1-1v-7c0-.55-.45-1-1-1z"
+            fill="#4CC3FA"
+          />
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M13.5 12.793c0-.891 1.077-1.337 1.707-.707l8.707 8.707c.63.63.184 1.707-.707 1.707H19.25a2 2 0 00-1.49.666l-2.514 2.81c-.612.684-1.745.25-1.745-.667V12.793zM17.684 21H22l-7-7v10l2.684-3z"
+            fill="#fff"
+          />
+          <path d="M15 24V14l7 7h-4.316L15 24z" fill="#324350" />
+        </g>
+        <defs>
+          <clipPath id="doc-datepicker_svg__clip0">
+            <path fill="#fff" d="M0 0h24v24H0z" />
+          </clipPath>
+        </defs>
+      </svg>
+    ),
+    href: '/date-picker',
+  },
+  {
     name: 'Message',
     image: (
       <svg width="24" height="24" viewBox="0 0 12 12" fill="none" className="opacity-70">

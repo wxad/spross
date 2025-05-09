@@ -9,6 +9,14 @@ const meta: MetaRecord = {
         "title": "Popover & Tooltip",
         "href": "/poptool"
       },
+      "select": {
+        "title": "Select",
+        "href": "/select"
+      },
+      "date-picker": {
+        "title": "DatePicker",
+        "href": "/date-picker"
+      },
       "message": {
         "title": "Message",
         "href": "/message"

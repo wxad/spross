@@ -6,6 +6,32 @@ html {
   --spross-message-gap: 14px;
 }
 
+[data-scrollbar-custom]::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+[data-scrollbar-custom]::-webkit-scrollbar-thumb {
+  min-width: 14px;
+  min-height: 14px;
+  background-color: rgba(0, 0, 0, 0.1);
+  background-clip: content-box;
+  border: 4px solid transparent;
+  border-radius: 14px;
+}
+
+[data-scrollbar-custom]::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+[data-scrollbar-custom]::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+[data-scrollbar-custom]::-webkit-scrollbar-thumb:active {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 /* ==========================================================================
     Popover & Tooltip
    ========================================================================== */
@@ -432,4 +458,149 @@ html {
 [data-spross-dialog-content-wrapper][data-status='close'] {
   opacity: 0;
   transform: scale(0.75);
+}
+
+/* ==========================================================================
+    Select
+   ========================================================================== */
+[data-spross-select-input-wrapper] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 12px;
+  padding-right: 12px;
+  height: 44px;
+  box-shadow: 0 1px 0 0 #e4e4e7;
+}
+
+[data-spross-select-input] {
+  flex: 1;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100%;
+  height: 100%;
+  font-size: 14px;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+[data-spross-select-input]::placeholder {
+  color: #71717a;
+}
+
+[data-spross-select-input]:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+[data-spross-select-input-icon] {
+  flex: none;
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
+}
+
+[data-spross-select-empty] {
+  padding-top: 24px;
+  padding-bottom: 24px;
+  text-align: center;
+  font-size: 14px;
+}
+
+[data-spross-select-list] {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+[data-spross-select-group] {
+  overflow: hidden;
+  padding: 4px;
+  color: #09090b;
+}
+
+[data-spross-select-group] [cmdk-group-heading] {
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #71717a;
+}
+
+[data-spross-select-item] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+  padding: 6px 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  outline: none;
+  user-select: none;
+}
+
+[data-spross-select-item] svg {
+  flex: none;
+  pointer-events: none;
+  width: 16px;
+  height: 16px;
+}
+
+[data-spross-select-item][data-disabled='true'] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+[data-spross-select-item][data-selected='true'] {
+  background-color: #f4f4f5;
+  color: #18181b;
+}
+
+/* ==========================================================================
+    DatePicker
+   ========================================================================== */
+
+[data-spross-date-picker-caption-nav] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  height: 48px;
+  box-shadow: 0 -1px 0 #e6e6e6 inset;
+}
+
+[data-spross-date-picker-caption-nav-prev],
+[data-spross-date-picker-caption-nav-next] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+[data-spross-date-picker-caption-nav-prev] {
+  transform: rotate(90deg);
+}
+
+[data-spross-date-picker-caption-nav-next] {
+  transform: rotate(-90deg);
+}
+
+.rdp-root {
+  position: relative;
+  width: 242px;
+}
+
+.rdp-months {
+  display: flex;
+  justify-content: space-between;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
 }
