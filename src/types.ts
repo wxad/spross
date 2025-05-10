@@ -158,9 +158,9 @@ export interface SprossSelectProps {
   onVisibleChange?: (visible: boolean) => void;
 }
 
-export interface SprossDatePickerCaptionProps {
-  date: Date
-  maxDate: Date
-  minDate: Date
-  onDateChange: (date: Date, e: React.FormEvent<HTMLSelectElement>) => void
+export interface SprossDatePickerProps {
+  value?: Date
+  maxDate?: Date
+  minDate?: Date
+  onChange?: (date?: Date) => void
 }
