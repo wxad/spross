@@ -9,6 +9,7 @@ import Select from './Select';
 import Popover from './Popover';
 import Tooltip from './Tooltip';
 import DatePicker from './DatePicker';
+import DateRangePicker from './DateRangePicker';
 
 const Spross = () => <></>;
 
@@ -19,6 +20,8 @@ Spross.Drawer = Drawer;
 Spross.Dialog = Dialog;
 Spross.Select = Select;
 Spross.DatePicker = DatePicker;
+Spross.DateRangePicker = DateRangePicker;
+
 export * from './types';
 
 export default Spross;

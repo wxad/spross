@@ -7,7 +7,11 @@ import CodeBox from '../CodeBox';
 import { Pane } from 'tweakpane';
 
 const Basic = () => {
-  const [value, setValue] = useState<Date | undefined>(new Date());
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const [value, setValue] = useState<[Date, Date] | undefined>([today, tomorrow]);
   const [params, setParams] = useState({
     locale: 'enUS' as 'zhCN' | 'enUS',
   });
@@ -43,20 +47,20 @@ const Basic = () => {
     <div>
       <CodeBox className="gap-2 flex-wrap pt-[80px]">
         <div ref={tweakpaneContainerRef} className="absolute top-2 right-2 w-[250px] grayscale opacity-90" />
-        <Spross.DatePicker
-          minDate={new Date()}
+        <Spross.DateRangePicker
           value={value}
           onChange={setValue}
           locale={params.locale}
           key={params.locale}
+          minDate={today}
         />
       </CodeBox>
       <CodeBlock>{`import Spross from 'spross';
 
-// ${value?.toLocaleDateString()}
-const [value, setValue] = useState<Date | undefined>(new Date());
+// ${value?.[0]?.toLocaleDateString()} - ${value?.[1]?.toLocaleDateString()}
+const [value, setValue] = useState<[Date, Date] | undefined>([new Date(), new Date()]);
 
-<Spross.DatePicker locale="${params.locale}" value={value} onChange={setValue} />`}</CodeBlock>
+<Spross.DateRangePicker locale="${params.locale}" value={value} onChange={setValue} />`}</CodeBlock>
     </div>
   );
 };

@@ -650,6 +650,10 @@ html {
   width: 118px;
 }
 
+[data-spross-date-picker-container-range] {
+  width: 204px;
+}
+
 [data-spross-date-picker-input] {
   position: relative;
   z-index: 1;
@@ -748,6 +752,10 @@ html {
   width: 242px;
 }
 
+.rdp-root[data-mode='range'] {
+  width: 476px;
+}
+
 .rdp-months {
   display: flex;
   justify-content: space-between;
@@ -816,6 +824,16 @@ html {
 .rdp-outside {
   opacity: 0;
   visibility: hidden;
+}
+
+.rdp-range_end {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.rdp-range_start {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 [data-spross-date-picker-locale='enUS'] [data-spross-date-picker-caption-select-year] {

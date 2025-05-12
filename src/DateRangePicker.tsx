@@ -1,15 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { zhCN, enUS } from 'react-day-picker/locale';
 import { DayPicker } from 'react-day-picker';
-import { SprossDatePickerProps } from './types';
+import { SprossDatePickerRangeProps } from './types';
 import Popover from './Popover';
 import {
   DEFAULT_HOVER_COLOR,
   MONTHS,
   getDefaultMinDate,
   getDefaultMaxDate,
-  convertDateToString,
-  isLegalDateString,
+  convertDateRangeToString,
+  isLegalDateRangeString,
   isSameDay,
   isSameMonth,
   isDayBefore,
@@ -17,7 +17,7 @@ import {
   today,
 } from './utils';
 
-const DatePicker = ({
+const DateRangePicker = ({
   minDate = getDefaultMinDate(),
   maxDate = getDefaultMaxDate(),
   value: valueProp = null,
@@ -27,7 +27,39 @@ const DatePicker = ({
   disabled = false,
   locale = 'zhCN',
   disabledDays,
-}: SprossDatePickerProps) => {
+}: SprossDatePickerRangeProps) => {
+  /**
+   * selectedDay 为传给 DayPicker 的最终 Date Object，
+   * value 为 input 的输入 String。
+   */
+  const getInitialState = () => {
+    let rangeValue = '';
+    let from: Date | undefined = undefined;
+    let to: Date | undefined = undefined;
+    if (valueProp !== null && valueProp !== undefined) {
+      [from, to] = valueProp;
+      rangeValue = convertDateRangeToString(valueProp, locale);
+    }
+
+    return {
+      from,
+      month: from,
+      rangeValue,
+      to,
+    };
+  };
+
+  const initialState = useMemo(getInitialState, []);
+
+  const [enteredTo, setEnteredTo] = useState<Date | null | undefined>(null);
+  const [from, setFrom] = useState<Date | null | undefined>(initialState.from);
+  const [to, setTo] = useState<Date | null | undefined>(initialState.to);
+  const [month, setMonth] = useState<Date | null | undefined>(initialState.month);
+  const [prevValueProp, setPrevValueProp] = useState<
+    [Date | null | undefined, Date | null | undefined] | null | undefined
+  >(valueProp);
+  const [rangeValue, setRangeValue] = useState<string>(initialState.rangeValue);
+
   const nextClickInsideRef = useRef(false);
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -47,12 +79,6 @@ const DatePicker = ({
     }
     return false;
   });
-  const [month, setMonth] = useState<Date | undefined>(() => {
-    if (valueProp !== null) {
-      return valueProp;
-    }
-    return today;
-  });
   const [selectedDay, setSelectedDay] = useState<Date | null | undefined>(() => {
     if (valueProp !== null) {
       return valueProp;
@@ -61,16 +87,35 @@ const DatePicker = ({
   });
   const [value, setValue] = useState<string>(() => {
     if (valueProp !== null) {
-      return convertDateToString(valueProp, locale);
+      return convertDateRangeToString(valueProp, locale);
     }
     return '';
   });
 
+  let fromFinal: Date | null | undefined;
+  let enteredToFinal = to || enteredTo;
+  const isReverse = from && enteredToFinal && isDayAfter(from, enteredToFinal);
+  if (isReverse) {
+    fromFinal = enteredToFinal;
+    enteredToFinal = from;
+  } else {
+    fromFinal = from;
+  }
+
+  const selectedDays = {
+    from: fromFinal,
+    to: enteredToFinal,
+  };
+
   useEffect(() => {
-    if (valueProp !== null && selectedDay !== valueProp) {
-      setMonth(valueProp);
-      setSelectedDay(valueProp);
-      setValue(convertDateToString(valueProp, locale));
+    if (valueProp !== null && valueProp !== undefined && valueProp !== prevValueProp) {
+      setFrom(valueProp[0]);
+      setTo(valueProp[1]);
+      setRangeValue(convertDateRangeToString(valueProp, locale));
+      setPrevValueProp(valueProp);
+    }
+    if (visibleProp !== null && visible !== !!visibleProp) {
+      setVisible(!!visibleProp);
     }
   }, [valueProp]);
 
@@ -88,13 +133,13 @@ const DatePicker = ({
       if (onChange) {
         onChange(undefined);
       }
-    } else if (isLegalDateString(val, locale)) {
+    } else if (isLegalDateRangeString(val, locale)) {
       const newDate = new Date(val);
       newDate.setHours(0, 0, 0, 0);
       if (!isDayDisabled(newDate) && !isSameDay(newDate, selectedDay)) {
         if (valueProp === null) {
           setSelectedDay(newDate);
-          setValue(convertDateToString(newDate, locale));
+          setValue(convertDateRangeToString(newDate, locale));
           if (!isSameMonth(newDate, selectedDay)) {
             setMonth(newDate);
           }
@@ -258,7 +303,7 @@ const DatePicker = ({
               return;
             }
           }
-          const newVal = convertDateToString(selectedDay, locale);
+          const newVal = convertDateRangeToString(selectedDay, locale);
           if (!bool && value !== newVal) {
             setValue(newVal);
           }
@@ -284,7 +329,8 @@ const DatePicker = ({
           <DayPicker
             data-spross-date-picker
             data-spross-date-picker-locale={locale}
-            mode="single"
+            mode="range"
+            numberOfMonths={2}
             captionLayout="dropdown"
             locale={locale === 'zhCN' ? zhCN : enUS}
             weekStartsOn={0}
@@ -293,7 +339,7 @@ const DatePicker = ({
             startMonth={minDate}
             disabled={[{ before: minDate, after: maxDate }, disabledDays]}
             endMonth={maxDate}
-            selected={selectedDay}
+            selected={selectedDays}
             onSelect={(day: Date | undefined) => {
               if (day === undefined) {
                 return;
@@ -305,7 +351,7 @@ const DatePicker = ({
               newDate.setHours(0, 0, 0, 0);
               if (valueProp === null) {
                 setSelectedDay(newDate);
-                setValue(convertDateToString(newDate, locale));
+                setValue(convertDateRangeToString(newDate, locale));
               }
               if (onChange) {
                 onChange(newDate);
@@ -457,7 +503,7 @@ const DatePicker = ({
         </div>
       }
     >
-      <div data-spross-date-picker-container>
+      <div data-spross-date-picker-container data-spross-date-picker-container-range>
         <input
           type="text"
           data-spross-date-picker-input
@@ -478,4 +524,4 @@ const DatePicker = ({
   );
 };
 
-export default DatePicker;
+export default DateRangePicker;

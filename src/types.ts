@@ -158,14 +158,22 @@ export interface SprossSelectProps {
   onVisibleChange?: (visible: boolean) => void;
 }
 
-export interface SprossDatePickerProps {
-  value?: Date
+export interface SprossDatePickerCommonProps {
   maxDate?: Date
   minDate?: Date
-  onChange?: (date?: Date) => void
   visible?: boolean
   onVisibleChange?: (visible: boolean) => void
   disabled?: boolean
   locale?: "zhCN" | "enUS"
   disabledDays?: (date: Date) => boolean
+}
+
+export interface SprossDatePickerProps extends SprossDatePickerCommonProps {
+  value?: Date
+  onChange?: (date?: Date) => void
+}
+
+export interface SprossDatePickerRangeProps extends SprossDatePickerCommonProps {
+  value?: [Date, Date]
+  onChange?: (date?: [Date, Date]) => void
 }
