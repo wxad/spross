@@ -52,13 +52,12 @@ const Basic = () => {
           onChange={setValue}
           locale={params.locale}
           key={params.locale}
-          minDate={today}
         />
       </CodeBox>
       <CodeBlock>{`import Spross from 'spross';
 
 // ${value?.[0]?.toLocaleDateString()} - ${value?.[1]?.toLocaleDateString()}
-const [value, setValue] = useState<[Date, Date] | undefined>([new Date(), new Date()]);
+const [value, setValue] = useState<[Date, Date] | undefined>([today, tomorrow]);
 
 <Spross.DateRangePicker locale="${params.locale}" value={value} onChange={setValue} />`}</CodeBlock>
     </div>

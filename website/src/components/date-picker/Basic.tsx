@@ -44,7 +44,6 @@ const Basic = () => {
       <CodeBox className="gap-2 flex-wrap pt-[80px]">
         <div ref={tweakpaneContainerRef} className="absolute top-2 right-2 w-[250px] grayscale opacity-90" />
         <Spross.DatePicker
-          minDate={new Date()}
           value={value}
           onChange={setValue}
           locale={params.locale}

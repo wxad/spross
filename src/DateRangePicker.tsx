@@ -15,6 +15,8 @@ import {
   isDayBefore,
   isDayAfter,
   today,
+  isDayInRange,
+  convertDateToString,
 } from './utils';
 
 const DateRangePicker = ({
@@ -160,10 +162,11 @@ const DateRangePicker = ({
     }
 
     const { offsetLeft, offsetWidth } = e.currentTarget;
+    const parentOffsetLeft = e.currentTarget.parentElement?.offsetLeft || 0;
 
     setTimeout(() => {
       navHoverFillRef.current.style.width = `${offsetWidth}px`;
-      navHoverFillRef.current.style.left = `${offsetLeft}px`;
+      navHoverFillRef.current.style.left = `${offsetLeft + parentOffsetLeft}px`;
       navHoverFillInnerRef.current.style.transform = 'scale(1)';
       navHoverFillInnerRef.current.style.background = DEFAULT_HOVER_COLOR;
     }, 0);
@@ -287,6 +290,68 @@ const DateRangePicker = ({
     }, 100);
   };
 
+  const isSelectingFirstDay = (fromArg?: Date | null, toArg?: Date | null) => {
+    const isRangeSelected = fromArg && toArg;
+    return !fromArg || isRangeSelected;
+  };
+
+  const handleDayClick = (day: Date) => {
+    day.setHours(0, 0, 0, 0);
+    if (isDayBefore(day, minDate) || isDayAfter(day, maxDate)) {
+      return;
+    }
+
+    if (isSelectingFirstDay(from, to)) {
+      // if (onStartDaySelect) {
+      //   onStartDaySelect(day);
+      // }
+      setEnteredTo(null);
+      setFrom(day);
+      setTo(null);
+    } else {
+      // if (onEndDaySelect) {
+      //   onEndDaySelect(day);
+      // }
+      let newRange: [Date | null | undefined, Date | null | undefined];
+      const fromStr = convertDateToString(from);
+      const toStr = convertDateToString(day);
+      let newRangeValue = '';
+      if (isDayAfter(day, from)) {
+        newRange = [from, day];
+        newRangeValue = `${fromStr} - ${toStr}`;
+      } else {
+        newRange = [day, from];
+        newRangeValue = `${toStr} - ${fromStr}`;
+      }
+      if (valueProp === null) {
+        setEnteredTo(day);
+        setRangeValue(newRangeValue);
+        setTo(day);
+      }
+      if (onChange) {
+        onChange(newRange);
+      }
+    }
+  };
+
+  const modifiers = {
+    rangeStart: isReverse ? to && fromFinal : fromFinal,
+    rangeStartHover: isReverse && !to && fromFinal,
+    rangeEnd: isReverse ? enteredToFinal : to && enteredToFinal,
+    rangeEndHover: !isReverse && !to && enteredToFinal,
+    selectedRange: (day: Date) => isDayInRange(day, [fromFinal, enteredToFinal], true),
+  };
+
+  const handleDayMouseEnter = (day: Date) => {
+    if (!isSelectingFirstDay(from, to)) {
+      setEnteredTo(day);
+    }
+  };
+
+  const handleDayMouseLeave = () => {
+    setEnteredTo(null);
+  };
+
   return (
     <Popover
       arrowed={false}
@@ -303,9 +368,19 @@ const DateRangePicker = ({
               return;
             }
           }
-          const newVal = convertDateRangeToString(selectedDay, locale);
-          if (!bool && value !== newVal) {
-            setValue(newVal);
+          const newVal = convertDateRangeToString([from, to], locale);
+          if (!bool) {
+            if (!to) {
+              if (newVal) {
+                const rangeReset = rangeValue.split(' - ');
+                setTimeout(() => {
+                  setFrom(new Date(rangeReset[0]));
+                  setTo(new Date(rangeReset[1]));
+                }, 250);
+              }
+            } else if (rangeValue !== newVal) {
+              setRangeValue(newVal);
+            }
           }
           if (onVisibleChange) {
             onVisibleChange(bool);
@@ -329,7 +404,6 @@ const DateRangePicker = ({
           <DayPicker
             data-spross-date-picker
             data-spross-date-picker-locale={locale}
-            mode="range"
             numberOfMonths={2}
             captionLayout="dropdown"
             locale={locale === 'zhCN' ? zhCN : enUS}
@@ -340,23 +414,10 @@ const DateRangePicker = ({
             disabled={[{ before: minDate, after: maxDate }, disabledDays]}
             endMonth={maxDate}
             selected={selectedDays}
-            onSelect={(day: Date | undefined) => {
-              if (day === undefined) {
-                return;
-              }
-              const newDate = new Date(day);
-              if (isDayDisabled(newDate)) {
-                return;
-              }
-              newDate.setHours(0, 0, 0, 0);
-              if (valueProp === null) {
-                setSelectedDay(newDate);
-                setValue(convertDateRangeToString(newDate, locale));
-              }
-              if (onChange) {
-                onChange(newDate);
-              }
-            }}
+            onDayClick={handleDayClick}
+            onDayMouseEnter={handleDayMouseEnter}
+            onDayMouseLeave={handleDayMouseLeave}
+            modifiers={modifiers}
             components={{
               YearsDropdown: ({ value, options }) => {
                 const optionsFiltered = options
@@ -474,8 +535,18 @@ const DateRangePicker = ({
                 </div>
               ),
               DayButton: ({ day, modifiers, onMouseEnter, onMouseLeave, ...props }) => {
-                const { focus, today, disabled, outside, selected } = modifiers;
-
+                const {
+                  focus,
+                  today,
+                  disabled,
+                  outside,
+                  selected,
+                  rangeStart,
+                  rangeStartHover,
+                  rangeEnd,
+                  rangeEndHover,
+                  selectedRange,
+                } = modifiers;
                 return (
                   <button
                     data-spross-date-picker-day
@@ -484,6 +555,11 @@ const DateRangePicker = ({
                     data-spross-date-picker-day-selected={selected}
                     data-spross-date-picker-day-focus={focus}
                     data-spross-date-picker-day-outside={outside}
+                    data-spross-date-picker-day-range-start={rangeStart}
+                    data-spross-date-picker-day-range-start-hover={rangeStartHover}
+                    data-spross-date-picker-day-range-end={rangeEnd}
+                    data-spross-date-picker-day-range-end-hover={rangeEndHover}
+                    data-spross-date-picker-day-selected-range={selectedRange}
                     onMouseEnter={(e) => {
                       onMouseEnter?.(e);
                       handleTdHoverEnter(e);
@@ -507,7 +583,7 @@ const DateRangePicker = ({
         <input
           type="text"
           data-spross-date-picker-input
-          value={value}
+          value={rangeValue}
           onChange={handleInputChange}
           onClick={() => {
             nextClickInsideRef.current = true;

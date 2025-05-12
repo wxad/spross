@@ -741,18 +741,12 @@ html {
   transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), background 0.25s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-[data-spross-date-picker-day] {
-  width: 30px;
-  height: 30px;
-  cursor: pointer;
-}
-
 .rdp-root {
   position: relative;
   width: 242px;
 }
 
-.rdp-root[data-mode='range'] {
+.rdp-root[data-multiple-months='true'] {
   width: 476px;
 }
 
@@ -803,7 +797,6 @@ html {
   vertical-align: middle;
   text-align: center;
   font-size: 13px;
-  border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.1s cubic-bezier(0.32, 0.72, 0, 1);
@@ -812,12 +805,6 @@ html {
 .rdp-disabled {
   pointer-events: none;
   color: #c7c7c7;
-}
-
-.rdp-selected {
-  color: #fff;
-  background-color: #296bef;
-  font-weight: 600;
 }
 
 .rdp-hidden,
@@ -836,6 +823,13 @@ html {
   border-bottom-right-radius: 0;
 }
 
+[data-spross-date-picker-day] {
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
 [data-spross-date-picker-locale='enUS'] [data-spross-date-picker-caption-select-year] {
   width: 66px;
 }
@@ -850,4 +844,38 @@ html {
 
 [data-spross-date-picker-locale='zhCN'] .rdp-dropdowns {
   flex-direction: row-reverse;
+}
+
+[data-spross-date-picker-day-selected='true'],
+[data-spross-date-picker-day-range-start='true'],
+[data-spross-date-picker-day-range-end='true'] {
+  color: #fff;
+  background-color: #296bef;
+  font-weight: 600;
+}
+
+[data-spross-date-picker-day-range-start='true'],
+[data-spross-date-picker-day-range-start-hover='true'] {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+[data-spross-date-picker-day-range-start-hover='true']:not([data-spross-date-picker-day-range-end='true']),
+[data-spross-date-picker-day-range-end-hover='true']:not([data-spross-date-picker-day-range-start='true']) {
+  background: #d4e1fc;
+}
+
+[data-spross-date-picker-day-range-end='true'],
+[data-spross-date-picker-day-range-end-hover='true'] {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+[data-spross-date-picker-day-selected-range='true'] {
+  background: #eaf0fd;
+  border-radius: 0;
+}
+
+[data-spross-date-picker-day-selected-range='true']:hover {
+  background: #d4e1fc;
 }

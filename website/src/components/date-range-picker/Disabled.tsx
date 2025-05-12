@@ -6,8 +6,11 @@ import CodeBlock from '../CodeBlock';
 import CodeBox from '../CodeBox';
 
 const Basic = () => {
-  const [value, setValue] = useState<Date | undefined>(new Date());
   const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const [value, setValue] = useState<[Date, Date] | undefined>([today, tomorrow]);
+
   // 拿到今年 1 月
   const minDate = new Date(today.getFullYear(), 0, 1);
   // 拿到今年 12 月
@@ -16,7 +19,7 @@ const Basic = () => {
   return (
     <div>
       <CodeBox className="gap-2 flex-wrap">
-        <Spross.DatePicker
+        <Spross.DateRangePicker
           value={value}
           onChange={setValue}
           locale="enUS"
@@ -27,8 +30,8 @@ const Basic = () => {
       </CodeBox>
       <CodeBlock>{`import Spross from 'spross';
 
-// ${value?.toLocaleDateString()}
-const [value, setValue] = useState<Date | undefined>(new Date());
+// ${value?.[0]?.toLocaleDateString()} - ${value?.[1]?.toLocaleDateString()}
+const [value, setValue] = useState<[Date, Date] | undefined>([today, tomorrow]);
 const today = new Date();
 const minDate = new Date(today.getFullYear(), 0, 1);
 const maxDate = new Date(today.getFullYear(), 11, 31);

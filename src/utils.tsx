@@ -156,19 +156,18 @@ export const isLegalDateString = (date: string, locale: 'zhCN' | 'enUS' = 'zhCN'
 };
 
 export const isLegalDateRangeString = (date: string, locale: 'zhCN' | 'enUS' = 'zhCN') => {
-  if (date.trim() === "") {
-    return true
+  if (date.trim() === '') {
+    return true;
   }
-  const strings = date.split(" - ")
+  const strings = date.split(' - ');
   return (
     strings.length === 2 &&
     strings[0].length &&
     strings[1].length &&
     isLegalDateString(strings[0], locale) &&
     isLegalDateString(strings[1], locale)
-  )
-}
-
+  );
+};
 
 export const isDayBefore = (date1: Date, date2: Date) => {
   const newDate1 = new Date(date1);
@@ -200,4 +199,34 @@ export const getDefaultMinDate = () => {
   date.setFullYear(date.getFullYear() - 4);
   date.setMonth(0, 1);
   return date;
+};
+
+export const clone = (d: Date | null | undefined) => (d ? new Date(d.getTime()) : null);
+
+export const isDayInRange = (
+  date: Date,
+  dateRange: [Date | null | undefined, Date | null | undefined],
+  exclusive: boolean = false,
+) => {
+  if (date === null || dateRange[0] === null || dateRange[1] === null) {
+    return false;
+  }
+
+  const day = clone(date);
+  const start = clone(dateRange[0]);
+  const end = clone(dateRange[1]);
+
+  if (day) {
+    day.setHours(0, 0, 0, 0);
+  }
+  if (start) {
+    start.setHours(0, 0, 0, 0);
+  }
+  if (end) {
+    end.setHours(0, 0, 0, 0);
+  }
+
+  return start && day && end
+    ? start <= day && day <= end && (!exclusive || (!isSameDay(start, day) && !isSameDay(day, end)))
+    : null;
 };
