@@ -565,11 +565,11 @@ html {
 [data-spross-date-picker-popup] {
   position: relative;
   overflow: hidden;
+  user-select: none;
 }
 
 [data-spross-date-picker-caption-nav] {
   position: absolute;
-  /* z-index: 2; */
   top: 0;
   right: 0;
   left: 0;
@@ -581,8 +581,7 @@ html {
   box-shadow: 0 -1px 0 #e6e6e6 inset;
 }
 
-[data-spross-date-picker-caption-nav-prev],
-[data-spross-date-picker-caption-nav-next] {
+[data-spross-date-picker-caption-nav-button] {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -591,11 +590,20 @@ html {
   cursor: pointer;
 }
 
-[data-spross-date-picker-caption-nav-prev] {
+[data-spross-date-picker-caption-nav-icon] {
+  fill: currentColor;
+}
+
+[data-spross-date-picker-caption-nav-button-disabled='true'] {
+  color: #c7c7c7;
+  pointer-events: none;
+}
+
+[data-spross-date-picker-caption-nav-button-prev] {
   transform: rotate(90deg);
 }
 
-[data-spross-date-picker-caption-nav-next] {
+[data-spross-date-picker-caption-nav-button-next] {
   transform: rotate(-90deg);
 }
 
@@ -605,14 +613,6 @@ html {
   vertical-align: middle;
   cursor: pointer;
   pointer-events: initial;
-}
-
-[data-spross-date-picker-caption-select-year] {
-  width: 80px;
-}
-
-[data-spross-date-picker-caption-select-month] {
-  width: 55px;
 }
 
 [data-spross-date-picker-caption-select-input] {
@@ -698,11 +698,21 @@ html {
   left: 16px;
   height: 30px;
   background-color: transparent;
-  transform: scale(0.8);
   pointer-events: none;
   border-radius: 4px;
-  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), background 0.25s cubic-bezier(0.32, 0.72, 0, 1),
-    width 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: left 0.25s cubic-bezier(0.32, 0.72, 0, 1), width 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+[data-spross-date-picker-caption-nav-hover-fill-inner] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  transform: scale(0.8);
+  border-radius: 4px;
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), background 0.25s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 [data-spross-date-picker-td-hover-fill] {
@@ -727,20 +737,10 @@ html {
   transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), background 0.25s cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-[data-spross-date-picker-td-active-fill] {
-  position: absolute;
-  top: 0;
-  left: 0;
+[data-spross-date-picker-day] {
   width: 30px;
   height: 30px;
-  background-color: #296bef;
-  border-radius: 4px;
-  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), background 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-}
-
-[data-spross-date-picker-day-selected='true'] {
-  color: #fff;
-  font-weight: 600;
+  cursor: pointer;
 }
 
 .rdp-root {
@@ -765,7 +765,6 @@ html {
   position: relative;
   z-index: 1;
   display: flex;
-  flex-direction: row-reverse;
   justify-content: center;
   margin: 9px -16px;
   height: 30px;
@@ -799,10 +798,38 @@ html {
   border-radius: 4px;
   overflow: hidden;
   cursor: pointer;
+  transition: all 0.1s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.rdp-disabled {
+  pointer-events: none;
+  color: #c7c7c7;
+}
+
+.rdp-selected {
+  color: #fff;
+  background-color: #296bef;
+  font-weight: 600;
 }
 
 .rdp-hidden,
 .rdp-outside {
   opacity: 0;
   visibility: hidden;
+}
+
+[data-spross-date-picker-locale='enUS'] [data-spross-date-picker-caption-select-year] {
+  width: 66px;
+}
+
+[data-spross-date-picker-locale='zhCN'] [data-spross-date-picker-caption-select-year] {
+  width: 80px;
+}
+
+[data-spross-date-picker-caption-select-month] {
+  width: 55px;
+}
+
+[data-spross-date-picker-locale='zhCN'] .rdp-dropdowns {
+  flex-direction: row-reverse;
 }

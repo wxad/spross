@@ -163,4 +163,9 @@ export interface SprossDatePickerProps {
   maxDate?: Date
   minDate?: Date
   onChange?: (date?: Date) => void
+  visible?: boolean
+  onVisibleChange?: (visible: boolean) => void
+  disabled?: boolean
+  locale?: "zhCN" | "enUS"
+  disabledDays?: (date: Date) => boolean
 }
