@@ -9,7 +9,7 @@ const Basic = () => {
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
-  const [value, setValue] = useState<[Date, Date] | undefined>([today, tomorrow]);
+  const [value, setValue] = useState<[Date, Date] | undefined>();
 
   // 拿到今年 1 月
   const minDate = new Date(today.getFullYear(), 0, 1);

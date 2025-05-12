@@ -166,6 +166,7 @@ export interface SprossDatePickerCommonProps {
   disabled?: boolean
   locale?: "zhCN" | "enUS"
   disabledDays?: (date: Date) => boolean
+  placeholder?: string
 }
 
 export interface SprossDatePickerProps extends SprossDatePickerCommonProps {
@@ -176,4 +177,6 @@ export interface SprossDatePickerProps extends SprossDatePickerCommonProps {
 export interface SprossDatePickerRangeProps extends SprossDatePickerCommonProps {
   value?: [Date, Date]
   onChange?: (date?: [Date, Date]) => void
+  onStartDaySelect?: (date?: Date) => void
+  onEndDaySelect?: (date?: Date) => void
 }

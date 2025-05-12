@@ -51,6 +51,16 @@ export const MONTHS = [
   },
 ];
 
+export const DATE_INPUT_PLACEHOLDER = {
+  zhCN: '请选择日期',
+  enUS: 'Select date',
+};
+
+export const DATE_RANGE_INPUT_PLACEHOLDER = {
+  zhCN: '请选择日期范围',
+  enUS: 'Select date range',
+};
+
 export const convertDateToString = (date?: Date | '' | null, locale: 'zhCN' | 'enUS' = 'zhCN') => {
   if (!date) {
     return '';

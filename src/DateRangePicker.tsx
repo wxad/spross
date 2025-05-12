@@ -17,6 +17,7 @@ import {
   today,
   isDayInRange,
   convertDateToString,
+  DATE_RANGE_INPUT_PLACEHOLDER,
 } from './utils';
 
 const DateRangePicker = ({
@@ -29,6 +30,9 @@ const DateRangePicker = ({
   disabled = false,
   locale = 'zhCN',
   disabledDays,
+  placeholder = DATE_RANGE_INPUT_PLACEHOLDER[locale],
+  onStartDaySelect,
+  onEndDaySelect,
 }: SprossDatePickerRangeProps) => {
   /**
    * selectedDay 为传给 DayPicker 的最终 Date Object，
@@ -125,29 +129,42 @@ const DateRangePicker = ({
     return (disabledDays && disabledDays(day)) || isDayBefore(day, minDate) || isDayAfter(day, maxDate);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setValue(val);
+  const handleInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const { value: val } = target;
+    setRangeValue(val);
     if (val.trim() === '') {
       if (valueProp === null) {
-        setSelectedDay(null);
+        setEnteredTo(null);
+        setFrom(null);
+        setTo(null);
       }
       if (onChange) {
-        onChange(undefined);
+        onChange([undefined, undefined]);
       }
     } else if (isLegalDateRangeString(val, locale)) {
-      const newDate = new Date(val);
-      newDate.setHours(0, 0, 0, 0);
-      if (!isDayDisabled(newDate) && !isSameDay(newDate, selectedDay)) {
+      const rangeValueStrs = val.split(' - ');
+      const newFrom = new Date(rangeValueStrs[0]);
+      const newTo = new Date(rangeValueStrs[1]);
+      newFrom.setHours(0, 0, 0, 0);
+      newTo.setHours(0, 0, 0, 0);
+      if (
+        !isDayDisabled(newFrom) &&
+        !isDayDisabled(newTo) &&
+        !isDayBefore(newTo, newFrom) &&
+        !(isSameDay(from, newFrom) && isSameDay(to, newTo))
+      ) {
         if (valueProp === null) {
-          setSelectedDay(newDate);
-          setValue(convertDateRangeToString(newDate, locale));
-          if (!isSameMonth(newDate, selectedDay)) {
-            setMonth(newDate);
-          }
+          setFrom(newFrom);
+          setTo(newTo);
+        }
+        // 修改日期后的 month 跳转
+        if (!isSameDay(from, newFrom)) {
+          setMonth(newFrom);
+        } else if (!isSameDay(to, newTo)) {
+          setMonth(newTo);
         }
         if (onChange) {
-          onChange(newDate);
+          onChange([newFrom, newTo]);
         }
       }
     }
@@ -302,16 +319,16 @@ const DateRangePicker = ({
     }
 
     if (isSelectingFirstDay(from, to)) {
-      // if (onStartDaySelect) {
-      //   onStartDaySelect(day);
-      // }
+      if (onStartDaySelect) {
+        onStartDaySelect(day);
+      }
       setEnteredTo(null);
       setFrom(day);
       setTo(null);
     } else {
-      // if (onEndDaySelect) {
-      //   onEndDaySelect(day);
-      // }
+      if (onEndDaySelect) {
+        onEndDaySelect(day);
+      }
       let newRange: [Date | null | undefined, Date | null | undefined];
       const fromStr = convertDateToString(from);
       const toStr = convertDateToString(day);
@@ -588,6 +605,7 @@ const DateRangePicker = ({
           onClick={() => {
             nextClickInsideRef.current = true;
           }}
+          placeholder={placeholder}
         />
         <svg data-spross-date-picker-icon width="18" height="18" viewBox="0 0 18 18">
           <path

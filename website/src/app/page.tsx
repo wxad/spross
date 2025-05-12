@@ -191,7 +191,7 @@ export default function Home() {
               </p>
               <p>This family includes:</p>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-2">
               {components.map((component) => (
                 <Link
                   key={component.name}

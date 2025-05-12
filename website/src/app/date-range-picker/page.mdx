@@ -1,5 +1,6 @@
 import Basic from '@/components/date-range-picker/Basic';
 import Disabled from '@/components/date-range-picker/Disabled';
+import MaxRange from '@/components/date-range-picker/MaxRange';
 
 # DateRangePicker
 
@@ -18,3 +19,9 @@ single mode:
 you can combine `disabledDays` prop with `minDate` and `maxDate` prop to disable days:
 
 <Disabled />
+
+## Max range
+
+use `onStartDaySelect` and `onEndDaySelect` to limit the range number to 7 days:
+
+<MaxRange />
