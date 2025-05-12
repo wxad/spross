@@ -7,7 +7,7 @@ import CodeBox from '../CodeBox';
 import { Pane } from 'tweakpane';
 
 const Basic = () => {
-  const [value, setValue] = useState<Date | undefined>(new Date());
+  const [value, setValue] = useState<Date | undefined>();
   const [params, setParams] = useState({
     locale: 'enUS' as 'zhCN' | 'enUS',
   });

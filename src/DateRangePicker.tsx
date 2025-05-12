@@ -49,7 +49,7 @@ const DateRangePicker = ({
 
     return {
       from,
-      month: from,
+      month: from || today,
       rangeValue,
       to,
     };
@@ -84,18 +84,6 @@ const DateRangePicker = ({
       return visibleProp;
     }
     return false;
-  });
-  const [selectedDay, setSelectedDay] = useState<Date | null | undefined>(() => {
-    if (valueProp !== null) {
-      return valueProp;
-    }
-    return undefined;
-  });
-  const [value, setValue] = useState<string>(() => {
-    if (valueProp !== null) {
-      return convertDateRangeToString(valueProp, locale);
-    }
-    return '';
   });
 
   let fromFinal: Date | null | undefined;

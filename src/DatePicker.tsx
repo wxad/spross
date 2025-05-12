@@ -15,6 +15,7 @@ import {
   isDayBefore,
   isDayAfter,
   today,
+  DATE_INPUT_PLACEHOLDER,
 } from './utils';
 
 const DatePicker = ({
@@ -27,6 +28,7 @@ const DatePicker = ({
   disabled = false,
   locale = 'zhCN',
   disabledDays,
+  placeholder = DATE_INPUT_PLACEHOLDER[locale],
 }: SprossDatePickerProps) => {
   const nextClickInsideRef = useRef(false);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -466,6 +468,7 @@ const DatePicker = ({
           onClick={() => {
             nextClickInsideRef.current = true;
           }}
+          placeholder={placeholder}
         />
         <svg data-spross-date-picker-icon width="18" height="18" viewBox="0 0 18 18">
           <path
