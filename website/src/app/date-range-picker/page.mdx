@@ -1,0 +1,27 @@
+import Basic from '@/components/date-range-picker/Basic';
+import Disabled from '@/components/date-range-picker/Disabled';
+import MaxRange from '@/components/date-range-picker/MaxRange';
+
+# DateRangePicker
+
+DateRangePickers combine a DateInput and a Calendar popover to allow users to enter or select a date range.
+
+## Basic Usage
+
+when locale is `zhCN`, the format is `YYYY-MM-DD - YYYY-MM-DD`, when locale is `enUS`, the format is `MM/DD/YYYY - MM/DD/YYYY`:
+
+single mode:
+
+<Basic />
+
+## Disabled days
+
+you can combine `disabledDays` prop with `minDate` and `maxDate` prop to disable days:
+
+<Disabled />
+
+## Max range
+
+use `onStartDaySelect` and `onEndDaySelect` to limit the range number to 7 days:
+
+<MaxRange />

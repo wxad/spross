@@ -1,24 +1,26 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { zhCN, enUS } from 'react-day-picker/locale';
 import { DayPicker } from 'react-day-picker';
-import { SprossDatePickerProps } from './types';
+import { SprossDatePickerRangeProps } from './types';
 import Popover from './Popover';
 import {
   DEFAULT_HOVER_COLOR,
   MONTHS,
   getDefaultMinDate,
   getDefaultMaxDate,
-  convertDateToString,
-  isLegalDateString,
+  convertDateRangeToString,
+  isLegalDateRangeString,
   isSameDay,
   isSameMonth,
   isDayBefore,
   isDayAfter,
   today,
-  DATE_INPUT_PLACEHOLDER,
+  isDayInRange,
+  convertDateToString,
+  DATE_RANGE_INPUT_PLACEHOLDER,
 } from './utils';
 
-const DatePicker = ({
+const DateRangePicker = ({
   minDate = getDefaultMinDate(),
   maxDate = getDefaultMaxDate(),
   value: valueProp = null,
@@ -28,8 +30,42 @@ const DatePicker = ({
   disabled = false,
   locale = 'zhCN',
   disabledDays,
-  placeholder = DATE_INPUT_PLACEHOLDER[locale],
-}: SprossDatePickerProps) => {
+  placeholder = DATE_RANGE_INPUT_PLACEHOLDER[locale],
+  onStartDaySelect,
+  onEndDaySelect,
+}: SprossDatePickerRangeProps) => {
+  /**
+   * selectedDay 为传给 DayPicker 的最终 Date Object，
+   * value 为 input 的输入 String。
+   */
+  const getInitialState = () => {
+    let rangeValue = '';
+    let from: Date | undefined = undefined;
+    let to: Date | undefined = undefined;
+    if (valueProp !== null && valueProp !== undefined) {
+      [from, to] = valueProp;
+      rangeValue = convertDateRangeToString(valueProp, locale);
+    }
+
+    return {
+      from,
+      month: from || today,
+      rangeValue,
+      to,
+    };
+  };
+
+  const initialState = useMemo(getInitialState, []);
+
+  const [enteredTo, setEnteredTo] = useState<Date | null | undefined>(null);
+  const [from, setFrom] = useState<Date | null | undefined>(initialState.from);
+  const [to, setTo] = useState<Date | null | undefined>(initialState.to);
+  const [month, setMonth] = useState<Date | null | undefined>(initialState.month);
+  const [prevValueProp, setPrevValueProp] = useState<
+    [Date | null | undefined, Date | null | undefined] | null | undefined
+  >(valueProp);
+  const [rangeValue, setRangeValue] = useState<string>(initialState.rangeValue);
+
   const nextClickInsideRef = useRef(false);
   const popupRef = useRef<HTMLDivElement>(null);
 
@@ -49,30 +85,31 @@ const DatePicker = ({
     }
     return false;
   });
-  const [month, setMonth] = useState<Date | undefined>(() => {
-    if (valueProp !== null) {
-      return valueProp;
-    }
-    return today;
-  });
-  const [selectedDay, setSelectedDay] = useState<Date | null | undefined>(() => {
-    if (valueProp !== null) {
-      return valueProp;
-    }
-    return undefined;
-  });
-  const [value, setValue] = useState<string>(() => {
-    if (valueProp !== null) {
-      return convertDateToString(valueProp, locale);
-    }
-    return '';
-  });
+
+  let fromFinal: Date | null | undefined;
+  let enteredToFinal = to || enteredTo;
+  const isReverse = from && enteredToFinal && isDayAfter(from, enteredToFinal);
+  if (isReverse) {
+    fromFinal = enteredToFinal;
+    enteredToFinal = from;
+  } else {
+    fromFinal = from;
+  }
+
+  const selectedDays = {
+    from: fromFinal,
+    to: enteredToFinal,
+  };
 
   useEffect(() => {
-    if (valueProp !== null && selectedDay !== valueProp) {
-      setMonth(valueProp);
-      setSelectedDay(valueProp);
-      setValue(convertDateToString(valueProp, locale));
+    if (valueProp !== null && valueProp !== undefined && valueProp !== prevValueProp) {
+      setFrom(valueProp[0]);
+      setTo(valueProp[1]);
+      setRangeValue(convertDateRangeToString(valueProp, locale));
+      setPrevValueProp(valueProp);
+    }
+    if (visibleProp !== null && visible !== !!visibleProp) {
+      setVisible(!!visibleProp);
     }
   }, [valueProp]);
 
@@ -80,29 +117,42 @@ const DatePicker = ({
     return (disabledDays && disabledDays(day)) || isDayBefore(day, minDate) || isDayAfter(day, maxDate);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setValue(val);
+  const handleInputChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const { value: val } = target;
+    setRangeValue(val);
     if (val.trim() === '') {
       if (valueProp === null) {
-        setSelectedDay(null);
+        setEnteredTo(null);
+        setFrom(null);
+        setTo(null);
       }
       if (onChange) {
-        onChange(undefined);
+        onChange([undefined, undefined]);
       }
-    } else if (isLegalDateString(val, locale)) {
-      const newDate = new Date(val);
-      newDate.setHours(0, 0, 0, 0);
-      if (!isDayDisabled(newDate) && !isSameDay(newDate, selectedDay)) {
+    } else if (isLegalDateRangeString(val, locale)) {
+      const rangeValueStrs = val.split(' - ');
+      const newFrom = new Date(rangeValueStrs[0]);
+      const newTo = new Date(rangeValueStrs[1]);
+      newFrom.setHours(0, 0, 0, 0);
+      newTo.setHours(0, 0, 0, 0);
+      if (
+        !isDayDisabled(newFrom) &&
+        !isDayDisabled(newTo) &&
+        !isDayBefore(newTo, newFrom) &&
+        !(isSameDay(from, newFrom) && isSameDay(to, newTo))
+      ) {
         if (valueProp === null) {
-          setSelectedDay(newDate);
-          setValue(convertDateToString(newDate, locale));
-          if (!isSameMonth(newDate, selectedDay)) {
-            setMonth(newDate);
-          }
+          setFrom(newFrom);
+          setTo(newTo);
+        }
+        // 修改日期后的 month 跳转
+        if (!isSameDay(from, newFrom)) {
+          setMonth(newFrom);
+        } else if (!isSameDay(to, newTo)) {
+          setMonth(newTo);
         }
         if (onChange) {
-          onChange(newDate);
+          onChange([newFrom, newTo]);
         }
       }
     }
@@ -117,10 +167,11 @@ const DatePicker = ({
     }
 
     const { offsetLeft, offsetWidth } = e.currentTarget;
+    const parentOffsetLeft = e.currentTarget.parentElement?.offsetLeft || 0;
 
     setTimeout(() => {
       navHoverFillRef.current.style.width = `${offsetWidth}px`;
-      navHoverFillRef.current.style.left = `${offsetLeft}px`;
+      navHoverFillRef.current.style.left = `${offsetLeft + parentOffsetLeft}px`;
       navHoverFillInnerRef.current.style.transform = 'scale(1)';
       navHoverFillInnerRef.current.style.background = DEFAULT_HOVER_COLOR;
     }, 0);
@@ -244,6 +295,68 @@ const DatePicker = ({
     }, 100);
   };
 
+  const isSelectingFirstDay = (fromArg?: Date | null, toArg?: Date | null) => {
+    const isRangeSelected = fromArg && toArg;
+    return !fromArg || isRangeSelected;
+  };
+
+  const handleDayClick = (day: Date) => {
+    day.setHours(0, 0, 0, 0);
+    if (isDayBefore(day, minDate) || isDayAfter(day, maxDate)) {
+      return;
+    }
+
+    if (isSelectingFirstDay(from, to)) {
+      if (onStartDaySelect) {
+        onStartDaySelect(day);
+      }
+      setEnteredTo(null);
+      setFrom(day);
+      setTo(null);
+    } else {
+      if (onEndDaySelect) {
+        onEndDaySelect(day);
+      }
+      let newRange: [Date | null | undefined, Date | null | undefined];
+      const fromStr = convertDateToString(from);
+      const toStr = convertDateToString(day);
+      let newRangeValue = '';
+      if (isDayAfter(day, from)) {
+        newRange = [from, day];
+        newRangeValue = `${fromStr} - ${toStr}`;
+      } else {
+        newRange = [day, from];
+        newRangeValue = `${toStr} - ${fromStr}`;
+      }
+      if (valueProp === null) {
+        setEnteredTo(day);
+        setRangeValue(newRangeValue);
+        setTo(day);
+      }
+      if (onChange) {
+        onChange(newRange);
+      }
+    }
+  };
+
+  const modifiers = {
+    rangeStart: isReverse ? to && fromFinal : fromFinal,
+    rangeStartHover: isReverse && !to && fromFinal,
+    rangeEnd: isReverse ? enteredToFinal : to && enteredToFinal,
+    rangeEndHover: !isReverse && !to && enteredToFinal,
+    selectedRange: (day: Date) => isDayInRange(day, [fromFinal, enteredToFinal], true),
+  };
+
+  const handleDayMouseEnter = (day: Date) => {
+    if (!isSelectingFirstDay(from, to)) {
+      setEnteredTo(day);
+    }
+  };
+
+  const handleDayMouseLeave = () => {
+    setEnteredTo(null);
+  };
+
   return (
     <Popover
       arrowed={false}
@@ -260,9 +373,19 @@ const DatePicker = ({
               return;
             }
           }
-          const newVal = convertDateToString(selectedDay, locale);
-          if (!bool && value !== newVal) {
-            setValue(newVal);
+          const newVal = convertDateRangeToString([from, to], locale);
+          if (!bool) {
+            if (!to) {
+              if (newVal) {
+                const rangeReset = rangeValue.split(' - ');
+                setTimeout(() => {
+                  setFrom(new Date(rangeReset[0]));
+                  setTo(new Date(rangeReset[1]));
+                }, 250);
+              }
+            } else if (rangeValue !== newVal) {
+              setRangeValue(newVal);
+            }
           }
           if (onVisibleChange) {
             onVisibleChange(bool);
@@ -286,7 +409,7 @@ const DatePicker = ({
           <DayPicker
             data-spross-date-picker
             data-spross-date-picker-locale={locale}
-            mode="single"
+            numberOfMonths={2}
             captionLayout="dropdown"
             locale={locale === 'zhCN' ? zhCN : enUS}
             weekStartsOn={0}
@@ -295,24 +418,11 @@ const DatePicker = ({
             startMonth={minDate}
             disabled={[{ before: minDate, after: maxDate }, disabledDays]}
             endMonth={maxDate}
-            selected={selectedDay}
-            onSelect={(day: Date | undefined) => {
-              if (day === undefined) {
-                return;
-              }
-              const newDate = new Date(day);
-              if (isDayDisabled(newDate)) {
-                return;
-              }
-              newDate.setHours(0, 0, 0, 0);
-              if (valueProp === null) {
-                setSelectedDay(newDate);
-                setValue(convertDateToString(newDate, locale));
-              }
-              if (onChange) {
-                onChange(newDate);
-              }
-            }}
+            selected={selectedDays}
+            onDayClick={handleDayClick}
+            onDayMouseEnter={handleDayMouseEnter}
+            onDayMouseLeave={handleDayMouseLeave}
+            modifiers={modifiers}
             components={{
               YearsDropdown: ({ value, options }) => {
                 const optionsFiltered = options
@@ -430,8 +540,18 @@ const DatePicker = ({
                 </div>
               ),
               DayButton: ({ day, modifiers, onMouseEnter, onMouseLeave, ...props }) => {
-                const { focus, today, disabled, outside, selected } = modifiers;
-
+                const {
+                  focus,
+                  today,
+                  disabled,
+                  outside,
+                  selected,
+                  rangeStart,
+                  rangeStartHover,
+                  rangeEnd,
+                  rangeEndHover,
+                  selectedRange,
+                } = modifiers;
                 return (
                   <button
                     data-spross-date-picker-day
@@ -440,6 +560,11 @@ const DatePicker = ({
                     data-spross-date-picker-day-selected={selected}
                     data-spross-date-picker-day-focus={focus}
                     data-spross-date-picker-day-outside={outside}
+                    data-spross-date-picker-day-range-start={rangeStart}
+                    data-spross-date-picker-day-range-start-hover={rangeStartHover}
+                    data-spross-date-picker-day-range-end={rangeEnd}
+                    data-spross-date-picker-day-range-end-hover={rangeEndHover}
+                    data-spross-date-picker-day-selected-range={selectedRange}
                     onMouseEnter={(e) => {
                       onMouseEnter?.(e);
                       handleTdHoverEnter(e);
@@ -459,11 +584,11 @@ const DatePicker = ({
         </div>
       }
     >
-      <div data-spross-date-picker-container>
+      <div data-spross-date-picker-container data-spross-date-picker-container-range>
         <input
           type="text"
           data-spross-date-picker-input
-          value={value}
+          value={rangeValue}
           onChange={handleInputChange}
           onClick={() => {
             nextClickInsideRef.current = true;
@@ -481,4 +606,4 @@ const DatePicker = ({
   );
 };
 
-export default DatePicker;
+export default DateRangePicker;

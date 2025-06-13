@@ -17,6 +17,10 @@ const meta: MetaRecord = {
         "title": "DatePicker",
         "href": "/date-picker"
       },
+      "date-range-picker": {
+        "title": "DateRangePicker",
+        "href": "/date-range-picker"
+      },
       "message": {
         "title": "Message",
         "href": "/message"

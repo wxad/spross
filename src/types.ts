@@ -158,9 +158,25 @@ export interface SprossSelectProps {
   onVisibleChange?: (visible: boolean) => void;
 }
 
-export interface SprossDatePickerCaptionProps {
-  date: Date
-  maxDate: Date
-  minDate: Date
-  onDateChange: (date: Date, e: React.FormEvent<HTMLSelectElement>) => void
+export interface SprossDatePickerCommonProps {
+  maxDate?: Date
+  minDate?: Date
+  visible?: boolean
+  onVisibleChange?: (visible: boolean) => void
+  disabled?: boolean
+  locale?: "zhCN" | "enUS"
+  disabledDays?: (date: Date) => boolean
+  placeholder?: string
+}
+
+export interface SprossDatePickerProps extends SprossDatePickerCommonProps {
+  value?: Date
+  onChange?: (date?: Date) => void
+}
+
+export interface SprossDatePickerRangeProps extends SprossDatePickerCommonProps {
+  value?: [Date, Date]
+  onChange?: (date?: [Date, Date]) => void
+  onStartDaySelect?: (date?: Date) => void
+  onEndDaySelect?: (date?: Date) => void
 }

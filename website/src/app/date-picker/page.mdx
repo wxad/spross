@@ -1,9 +1,20 @@
 import Basic from '@/components/date-picker/Basic';
+import Disabled from '@/components/date-picker/Disabled';
 
 # DatePicker
 
 DatePickers combine a DateInput and a Calendar popover to allow users to enter or select a date and time value.
 
-## Usage
+## Basic Usage
+
+when locale is `zhCN`, the format is `YYYY-MM-DD`, when locale is `enUS`, the format is `MM/DD/YYYY`:
+
+single mode:
 
 <Basic />
+
+## Disabled days
+
+you can combine `disabledDays` prop with `minDate` and `maxDate` prop to disable days:
+
+<Disabled />
