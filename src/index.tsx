@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import './styles.css';
 import Message from './Message';
+import { queueMicrotaskPolyfill } from './queueMtPolyfill';
 import Drawer from './Drawer';
 import Dialog from './Dialog';
 import Select from './Select';
@@ -10,6 +11,8 @@ import Popover from './Popover';
 import Tooltip from './Tooltip';
 import DatePicker from './DatePicker';
 import DateRangePicker from './DateRangePicker';
+
+queueMicrotaskPolyfill();
 
 const Spross = () => <></>;
 
