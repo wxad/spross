@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { zhCN, enUS } from 'react-day-picker/locale';
-import { DayPicker } from 'react-day-picker';
+import { zhCN, enUS } from 'react-day-picker-for-od/locale';
+import { DayPicker } from 'react-day-picker-for-od';
 import { SprossDatePickerProps } from './types';
 import Popover from './Popover';
 import {

@@ -65,6 +65,6 @@
   "dependencies": {
     "@floating-ui/react": "0.27.8",
     "rc-select": "^14.16.6",
-    "react-day-picker": "^9.6.7"
+    "react-day-picker-for-od": "latest"
   }
 }
